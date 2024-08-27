@@ -1,1 +1,1 @@
-from .dynaspark import dsai
+from .dynaspark import DynaSpark
