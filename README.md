@@ -22,14 +22,20 @@ The DynaSpark API allows developers to access the assistant's capabilities progr
 
 - **Accessing the DynaSpark API:**
   - **Text Generation:** Use the endpoint `https://dynaspark.onrender.com/api/generate_response`.
-  - **Image Generation:** Use the endpoint `https://dynaspark.onrender.com/api/generate_image`.
+  - **Image Generation:** Use the endpoint `https://dynaspark.onrender.com/image`.
 
 - **Making API Requests:**
-  - To generate a response or image, include your API key and user input as query parameters.
+  - To generate a response, include your API key and user input as query parameters.
   - Example:
     ```plaintext
     https://dynaspark.onrender.com/api/generate_response?api_key=YOUR_API_KEY&user_input=Hello
     ```
   - Replace `YOUR_API_KEY` with your actual API key and `Hello` with the desired input.
-
+ 
+  - To generate a image, include user input as query parameters(No need for API key).
+  - Example:
+    ```plaintext
+    https://dynaspark.onrender.com/image?user_input=A panda playing guitar
+    ```
+  - Replace 'A panda playing guitar' with the desired input.
 ---
