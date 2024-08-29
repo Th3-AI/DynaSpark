@@ -1,37 +1,21 @@
-# DynaSpark API
+# [DynaSpark](https://dynaspark.onrender.com)
 
-Currently only Python package is available.
+**DynaSpark** is an advanced AI assistant developed by **Th3-C0der**. It is designed to ignite dynamic and engaging interactions with users, fostering innovation and creativity in problem-solving and assistance within the digital space.
 
-A Python client for interacting with the DynaSpark API.
+## Key Features
 
-## Installation
+- **Natural Language Processing:** Provides intelligent text-based responses.
+- **Image Generation:** Creates custom images from text prompts.
+- **Adaptable Personality:** Adjusts its communication style based on the context.
+- **API Integration:** Easily integrate DynaSpark into your own projects using its robust API.
 
-You can install the package via pip:
+## [DynaSpark API](https://github.com/Th3-AI/DynaSpark)
 
-```bash
-pip install dynaspark
-```
+The DynaSpark API allows developers to access the assistant's capabilities programmatically. It supports features like text response generation and image creation, making it a powerful tool for building interactive applications.
 
-## Usage
+### API Highlights
 
-```python
-#Example Code
-from dynaspark import DynaSpark
+- **Text Response Generation:** Generate human-like responses based on provided prompts.
+- **Image Generation:** Create images using descriptive text inputs.
 
-# Initialize the DynaSpark API client
-client = DynaSpark(api_key="your_api_key_here")
-
-# Generate a response
-response = client.generate_response(user_input="Hello!")
-print(response)
-
-# Generate an image
-image_url = client.generate_image(prompt="A majestic lion with a flowing mane, standing on a rocky cliff overlooking a sunset.")
-print(image_url)
-```
-
-## Free API KEY
-
-```
-TH3_API_KEY
-```
+---
