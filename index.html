@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DynaSpark API Interface</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1, h2 {
+            text-align: center;
+        }
+        #tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            border-radius: 5px 5px 0 0;
+        }
+        .tab.active {
+            background-color: #fff;
+            border-bottom: none;
+        }
+        #content > div {
+            display: none;
+            border: 1px solid #ccc;
+            padding: 20px;
+            border-radius: 0 0 5px 5px;
+        }
+        #content > div.active {
+            display: block;
+        }
+        #chat-box {
+            height: 300px;
+            overflow-y: auto;
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        #chat-input {
+            width: calc(100% - 70px);
+            padding: 5px;
+        }
+        #chat-send {
+            width: 60px;
+            padding: 5px;
+        }
+        #image-generate, #image-prompt {
+            display: block;
+            margin: 10px auto;
+            padding: 10px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        #image-response, #response {
+            text-align: center;
+            margin-top: 20px;
+        }
+        #generated-image {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>DynaSpark API Interface</h1>
+    <div id="tabs">
+        <div id="image-tab" class="tab active" onclick="switchTab('image')">Image Generator</div>
+        <div id="chat-tab" class="tab" onclick="switchTab('chat')">Chat</div>
+    </div>
+    <div id="content">
+        <div id="image-content" class="active">
+            <h2>Generate Image</h2>
+            <input type="text" id="image-prompt" placeholder="Enter image description...">
+            <button id="image-generate">Generate Image</button>
+            <div id="loading" style="display:none;">Generating image...</div>
+            <div id="response"></div>
+        </div>
+        <div id="chat-content">
+            <h2>Chat</h2>
+            <div id="chat-box"></div>
+            <input type="text" id="chat-input" placeholder="Type your message...">
+            <button id="chat-send">Send</button>
+        </div>
+    </div>
+
+    <script>
+        const API_ENDPOINT = 'https://dynaspark.onrender.com';
+        const API_KEY = 'TH3_API_KEY';
+
+        function switchTab(tab) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('#content > div').forEach(c => c.classList.remove('active'));
+            document.getElementById(`${tab}-tab`).classList.add('active');
+            document.getElementById(`${tab}-content`).classList.add('active');
+        }
+
+        // Image Generation
+        document.getElementById('image-generate').addEventListener('click', async function() {
+            const prompt = document.getElementById('image-prompt').value.trim();
+            if (!prompt) {
+                alert('Please enter an image description.');
+                return;
+            }
+
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('response').innerHTML = '';
+
+            try {
+                const response = await fetch(`${API_ENDPOINT}/api/generate_image?api_key=${API_KEY}&user_input=${encodeURIComponent(prompt)}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+
+                if (!response.ok) {
+                    throw new Error('Image generation failed');
+                }
+
+                const data = await response.json();
+                document.getElementById('response').innerHTML = `<img id="generated-image" src="${data.image_url}" alt="Generated Image">`;
+            } catch (error) {
+                document.getElementById('response').innerHTML = `Error: ${error.message}`;
+            } finally {
+                document.getElementById('loading').style.display = 'none';
+            }
+        });
+
+        // Chat Functionality
+        document.getElementById('chat-send').addEventListener('click', async function() {
+            const input = document.getElementById('chat-input');
+            const message = input.value.trim();
+            if (message) {
+                const chatBox = document.getElementById('chat-box');
+                chatBox.innerHTML += `<p><strong>You:</strong> ${message}</p>`;
+                input.value = '';
+
+                chatBox.innerHTML += `<p><em>AI is typing...</em></p>`;
+                chatBox.scrollTop = chatBox.scrollHeight;
+
+                try {
+                    const user_input = encodeURIComponent(message);
+                    const response = await fetch(`${API_ENDPOINT}/api/generate_response?api_key=${API_KEY}&user_input=${user_input}`, {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('Chat request failed');
+                    }
+
+                    const data = await response.json();
+                    chatBox.innerHTML = chatBox.innerHTML.replace('<p><em>AI is typing...</em></p>', '');
+                    chatBox.innerHTML += `<p><strong>AI:</strong> ${data.response}</p>`;
+                } catch (error) {
+                    chatBox.innerHTML = chatBox.innerHTML.replace('<p><em>AI is typing...</em></p>', '');
+                    chatBox.innerHTML += `<p><strong>Error:</strong> ${error.message}</p>`;
+                } finally {
+                    chatBox.scrollTop = chatBox.scrollHeight;
+                }
+            }
+        });
+
+        document.getElementById('chat-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                document.getElementById('chat-send').click();
+            }
+        });
+    </script>
+</body>
+</html>
