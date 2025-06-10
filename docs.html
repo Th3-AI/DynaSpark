@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DynaSpark API Documentation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #1e40af;
+            --background-color: #f8fafc;
+            --text-color: #1e293b;
+            --border-color: #e2e8f0;
+            --code-bg: #f1f5f9;
+            --card-bg: #ffffff;
+            --hover-bg: #f1f5f9;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--background-color);
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05);
+            padding: 2rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--text-color);
+        }
+
+        .badges {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .badge {
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.2s ease;
+        }
+
+        .badge:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .badge.active {
+            background-color: #22c55e;
+            color: white;
+        }
+
+        .badge.license {
+            background-color: #eab308;
+            color: white;
+        }
+
+        .toc {
+            background-color: var(--hover-bg);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+        }
+
+        .toc h2 {
+            margin-bottom: 1rem;
+            font-size: 1.25rem;
+        }
+
+        .toc ul {
+            list-style: none;
+        }
+
+        .toc li {
+            margin-bottom: 0.5rem;
+        }
+
+        .toc a {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .toc a:hover {
+            color: var(--secondary-color);
+            text-decoration: underline;
+        }
+
+        section {
+            margin-bottom: 3rem;
+        }
+
+        section h2 {
+            font-size: 1.75rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-color);
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 0.5rem;
+        }
+
+        section h3 {
+            font-size: 1.5rem;
+            margin: 2rem 0 1rem;
+            color: var(--text-color);
+        }
+
+        p {
+            margin-bottom: 1rem;
+        }
+
+        code {
+            background-color: var(--code-bg);
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.9rem;
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            padding: 1rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1rem 0;
+        }
+
+        pre code {
+            background-color: transparent;
+            padding: 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            background-color: var(--hover-bg);
+            font-weight: 600;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .note {
+            background-color: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 1rem 0;
+            flex-wrap: wrap;
+        }
+
+        .social-link {
+            color: var(--text-color);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            background-color: var(--hover-bg);
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .social-link i {
+            font-size: 1.1rem;
+            width: 1.25rem;
+            text-align: center;
+        }
+
+        .social-link:hover {
+            background-color: var(--primary-color);
+            color: white;
+            transform: translateY(-1px);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .badges {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>DynaSpark API Documentation 🌟</h1>
+            <div class="badges">
+                <a href="https://dynaspark.onrender.com/status" target="_blank" class="badge active"><i class="fas fa-circle-check"></i> API Active</a>
+                <span class="badge license"><i class="fas fa-shield"></i> MIT License</span>
+            </div>
+            <p>The official documentation for the DynaSpark API - Your free AI generation platform</p>
+        </header>
+
+        <nav class="toc">
+            <h2>📋 Table of Contents</h2>
+            <ul>
+                <li><a href="#base-url">Base URL</a></li>
+                <li><a href="#authentication">Authentication</a></li>
+                <li><a href="#endpoints">Endpoints</a>
+                    <ul>
+                        <li><a href="#text-generation">Text Generation</a></li>
+                        <li><a href="#image-generation">Image Generation</a></li>
+                        <li><a href="#audio-response-generation">Audio Response Generation</a></li>
+                    </ul>
+                </li>
+                <li><a href="#response-formats">Response Formats</a></li>
+                <li><a href="#error-handling">Error Handling</a></li>
+                <li><a href="#rate-limits">Rate Limits</a></li>
+                <li><a href="#examples">Examples</a></li>
+            </ul>
+        </nav>
+
+        <main>
+            <section id="base-url">
+                <h2>🔗 Base URL</h2>
+                <pre><code>https://dynaspark.onrender.com/api</code></pre>
+            </section>
+
+            <section id="authentication">
+                <h2>🔐 Authentication</h2>
+                <p>The API uses a simple API key authentication system. Include your API key in the request parameters:</p>
+                <pre><code>?api_key=YOUR_API_KEY</code></pre>
+                <div class="note">
+                    <strong>Note:</strong> Currently, no API key is required for testing and development. You can use the API without authentication.
+                </div>
+            </section>
+
+            <section id="endpoints">
+                <h2>📡 Endpoints</h2>
+
+                <section id="text-generation">
+                    <h3>Text Generation</h3>
+                    <p>Generate text responses using various models and parameters.</p>
+                    <p><strong>Endpoint:</strong> <code>/generate_response</code></p>
+                    <p><strong>Method:</strong> <code>GET</code></p>
+
+                    <h4>Parameters:</h4>
+                    <table>
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                            <th>Default</th>
+                        </tr>
+                        <tr>
+                            <td><code>user_input</code></td>
+                            <td>string</td>
+                            <td>The input text to generate a response for</td>
+                            <td>Required</td>
+                        </tr>
+                        <tr>
+                            <td><code>api_key</code></td>
+                            <td>string</td>
+                            <td>Your API key</td>
+                            <td>Required</td>
+                        </tr>
+                        <tr>
+                            <td><code>model</code></td>
+                            <td>string</td>
+                            <td>Model to use for generation</td>
+                            <td>None</td>
+                        </tr>
+                        <tr>
+                            <td><code>temperature</code></td>
+                            <td>float</td>
+                            <td>Controls randomness (0.0-3.0)</td>
+                            <td>None</td>
+                        </tr>
+                        <tr>
+                            <td><code>top_p</code></td>
+                            <td>float</td>
+                            <td>Controls diversity (0.0-1.0)</td>
+                            <td>None</td>
+                        </tr>
+                        <tr>
+                            <td><code>presence_penalty</code></td>
+                            <td>float</td>
+                            <td>Penalizes repeated tokens (-2.0-2.0)</td>
+                            <td>None</td>
+                        </tr>
+                        <tr>
+                            <td><code>frequency_penalty</code></td>
+                            <td>float</td>
+                            <td>Penalizes frequent tokens (-2.0-2.0)</td>
+                            <td>None</td>
+                        </tr>
+                        <tr>
+                            <td><code>json</code></td>
+                            <td>boolean</td>
+                            <td>Return JSON response</td>
+                            <td>false</td>
+                        </tr>
+                        <tr>
+                            <td><code>system</code></td>
+                            <td>string</td>
+                            <td>Custom system prompt</td>
+                            <td>None</td>
+                        </tr>
+                        <tr>
+                            <td><code>stream</code></td>
+                            <td>boolean</td>
+                            <td>Stream the response</td>
+                            <td>false</td>
+                        </tr>
+                        <tr>
+                            <td><code>private</code></td>
+                            <td>boolean</td>
+                            <td>Keep generation private</td>
+                            <td>false</td>
+                        </tr>
+                        <tr>
+                            <td><code>seed</code></td>
+                            <td>integer</td>
+                            <td>Random seed for reproducibility</td>
+                            <td>None</td>
+                        </tr>
+                        <tr>
+                            <td><code>referrer</code></td>
+                            <td>string</td>
+                            <td>Referrer information</td>
+                            <td>None</td>
+                        </tr>
+                        <tr>
+                            <td><code>voice</code></td>
+                            <td>string</td>
+                            <td>Voice for audio response</td>
+                            <td>None</td>
+                        </tr>
+                    </table>
+
+                    <h4>Example Request:</h4>
+                    <pre><code>curl "https://dynaspark.onrender.com/api/generate_response?user_input=What%20is%20AI%3F&api_key=YOUR_API_KEY&temperature=0.8"</code></pre>
+
+                    <h4>Example Response:</h4>
+                    <pre><code>{
+    "response": "Artificial Intelligence (AI) is a branch of computer science...",
+    "model": "default",
+    "usage": {
+        "prompt_tokens": 4,
+        "completion_tokens": 150,
+        "total_tokens": 154
+    }
+}</code></pre>
+                </section>
+
+                <section id="image-generation">
+                    <h3>Image Generation</h3>
+                    <p>Generate images from text descriptions.</p>
+                    <p><strong>Endpoint:</strong> <code>/generate_image</code></p>
+                    <p><strong>Method:</strong> <code>GET</code></p>
+
+                    <h4>Parameters:</h4>
+                    <table>
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                            <th>Default</th>
+                        </tr>
+                        <tr>
+                            <td><code>user_input</code></td>
+                            <td>string</td>
+                            <td>The prompt to generate an image for</td>
+                            <td>Required</td>
+                        </tr>
+                        <tr>
+                            <td><code>api_key</code></td>
+                            <td>string</td>
+                            <td>Your API key</td>
+                            <td>Required</td>
+                        </tr>
+                        <tr>
+                            <td><code>width</code></td>
+                            <td>integer</td>
+                            <td>Image width (64-2048)</td>
+                            <td>768</td>
+                        </tr>
+                        <tr>
+                            <td><code>height</code></td>
+                            <td>integer</td>
+                            <td>Image height (64-2048)</td>
+                            <td>768</td>
+                        </tr>
+                        <tr>
+                            <td><code>model</code></td>
+                            <td>string</td>
+                            <td>Model to use (flux/turbo/gptimage)</td>
+                            <td>None</td>
+                        </tr>
+                        <tr>
+                            <td><code>nologo</code></td>
+                            <td>boolean</td>
+                            <td>Exclude watermark</td>
+                            <td>false</td>
+                        </tr>
+                        <tr>
+                            <td><code>seed</code></td>
+                            <td>integer</td>
+                            <td>Random seed</td>
+                            <td>None</td>
+                        </tr>
+                        <tr>
+                            <td><code>wm</code></td>
+                            <td>string</td>
+                            <td>Custom watermark</td>
+                            <td>None</td>
+                        </tr>
+                    </table>
+
+                    <h4>Example Request:</h4>
+                    <pre><code>curl "https://dynaspark.onrender.com/api/generate_image?user_input=A%20beautiful%20sunset&api_key=YOUR_API_KEY&width=1024&height=768"</code></pre>
+
+                    <h4>Example Response:</h4>
+                    <pre><code>{
+    "image_url": "https://dynaspark.onrender.com/generated/image_123456.png",
+    "model": "flux",
+    "seed": 12345
+}</code></pre>
+                </section>
+
+                <section id="audio-response-generation">
+                    <h3>Audio Response Generation</h3>
+                    <p>Generate audio responses using text generation with audio output.</p>
+                    <p><strong>Endpoint:</strong> <code>/generate_response</code></p>
+                    <p><strong>Method:</strong> <code>GET</code></p>
+
+                    <h4>Parameters:</h4>
+                    <table>
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                            <th>Default</th>
+                        </tr>
+                        <tr>
+                            <td><code>user_input</code></td>
+                            <td>string</td>
+                            <td>The input text to generate a response for</td>
+                            <td>Required</td>
+                        </tr>
+                        <tr>
+                            <td><code>api_key</code></td>
+                            <td>string</td>
+                            <td>Your API key</td>
+                            <td>Required</td>
+                        </tr>
+                        <tr>
+                            <td><code>model</code></td>
+                            <td>string</td>
+                            <td>Must be "openai-audio"</td>
+                            <td>Required</td>
+                        </tr>
+                        <tr>
+                            <td><code>voice</code></td>
+                            <td>string</td>
+                            <td>Voice to use</td>
+                            <td>"alloy"</td>
+                        </tr>
+                    </table>
+
+                    <h4>Available Voices:</h4>
+                    <table>
+                        <tr>
+                            <th>Voice</th>
+                            <th>Description</th>
+                        </tr>
+                        <tr>
+                            <td><code>alloy</code></td>
+                            <td>Balanced, natural-sounding voice (default)</td>
+                        </tr>
+                        <tr>
+                            <td><code>echo</code></td>
+                            <td>Clear, professional voice</td>
+                        </tr>
+                        <tr>
+                            <td><code>fable</code></td>
+                            <td>Warm, engaging voice</td>
+                        </tr>
+                        <tr>
+                            <td><code>onyx</code></td>
+                            <td>Deep, authoritative voice</td>
+                        </tr>
+                        <tr>
+                            <td><code>nova</code></td>
+                            <td>Bright, energetic voice</td>
+                        </tr>
+                        <tr>
+                            <td><code>shimmer</code></td>
+                            <td>Soft, melodic voice</td>
+                        </tr>
+                    </table>
+
+                    <h4>Example Request:</h4>
+                    <pre><code>curl "https://dynaspark.onrender.com/api/generate_response?user_input=Hello%20world&api_key=YOUR_API_KEY&model=openai-audio&voice=nova" \
+     --output response.mp3</code></pre>
+
+                    <h4>Response:</h4>
+                    <ul>
+                        <li>Binary audio data (MP3 format)</li>
+                        <li>Content-Type: audio/mpeg</li>
+                    </ul>
+                </section>
+            </section>
+
+            <section id="response-formats">
+                <h2>📦 Response Formats</h2>
+
+                <h3>Text Generation</h3>
+                <ul>
+                    <li>Default: JSON object with <code>response</code> field</li>
+                    <li>With <code>json=true</code>: Full JSON response with metadata</li>
+                    <li>With <code>stream=true</code>: Server-sent events stream</li>
+                </ul>
+
+                <h3>Image Generation</h3>
+                <ul>
+                    <li>JSON object with <code>image_url</code> field</li>
+                    <li>Image URL is valid for 24 hours</li>
+                </ul>
+
+                <h3>Audio Response</h3>
+                <ul>
+                    <li>Binary MP3 data</li>
+                    <li>Content-Type: audio/mpeg</li>
+                </ul>
+            </section>
+
+            <section id="error-handling">
+                <h2>⚠️ Error Handling</h2>
+                <p>The API uses standard HTTP status codes and returns error messages in JSON format:</p>
+                <pre><code>{
+    "error": "Error message description"
+}</code></pre>
+
+                <h3>Common Error Codes:</h3>
+                <ul>
+                    <li><code>400</code>: Bad Request (invalid parameters)</li>
+                    <li><code>401</code>: Unauthorized (invalid API key)</li>
+                    <li><code>429</code>: Too Many Requests (rate limit exceeded)</li>
+                    <li><code>500</code>: Internal Server Error</li>
+                </ul>
+            </section>
+
+            <section id="rate-limits">
+                <h2>🚦 Rate Limits</h2>
+                <ul>
+                    <li>Free API Key: 100 requests per hour</li>
+                    <li>Custom API Keys: Contact for limits</li>
+                </ul>
+
+                <p>Rate limit headers are included in responses:</p>
+                <pre><code>X-RateLimit-Limit: 100
+X-RateLimit-Remaining: 95
+X-RateLimit-Reset: 1625097600</code></pre>
+            </section>
+
+            <section id="examples">
+                <h2>📝 Examples</h2>
+
+                <h3>Text Generation with Parameters</h3>
+                <pre><code>curl "https://dynaspark.onrender.com/api/generate_response?user_input=Write%20a%20poem&api_key=YOUR_API_KEY&temperature=0.8&top_p=0.9&presence_penalty=0.6&frequency_penalty=0.6"</code></pre>
+
+                <h3>Image Generation with Custom Size</h3>
+                <pre><code>curl "https://dynaspark.onrender.com/api/generate_image?user_input=A%20futuristic%20city&api_key=YOUR_API_KEY&width=1024&height=768&model=flux&nologo=true"</code></pre>
+
+                <h3>Audio Response with Different Voice</h3>
+                <pre><code>curl "https://dynaspark.onrender.com/api/generate_response?user_input=Hello%20world&api_key=YOUR_API_KEY&model=openai-audio&voice=nova" \
+     --output response.mp3</code></pre>
+
+                <h3>JSON Response</h3>
+                <pre><code>curl "https://dynaspark.onrender.com/api/generate_response?user_input=List%203%20colors&api_key=YOUR_API_KEY&json=true"</code></pre>
+            </section>
+
+            <section id="api-status">
+                <h2>🔄 API Status</h2>
+                <p>Check the API status at: <a href="https://dynaspark.onrender.com/status" target="_blank">https://dynaspark.onrender.com/status</a></p>
+            </section>
+
+            <section id="support">
+                <h2>📞 Support</h2>
+                <p>For API support, feature requests, or bug reports:</p>
+                <ul>
+                    <li>GitHub Issues: <a href="https://github.com/Th3-AI/DynaSpark/issues" target="_blank">https://github.com/Th3-AI/DynaSpark/issues</a></li>
+                    <li>Email: <a href="mailto:dvp.ai.ml@gmail.com">dvp.ai.ml@gmail.com</a></li>
+                </ul>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <div class="social-links">
+                <a href="https://github.com/Th3-AI/DynaSpark" target="_blank" class="social-link"><i class="fab fa-github"></i>GitHub</a>
+                <a href="https://youtube.com/@Th3Coder" target="_blank" class="social-link"><i class="fab fa-youtube"></i>YouTube</a>
+                <a href="https://instagram.com/th3_c0der" target="_blank" class="social-link"><i class="fab fa-instagram"></i>Instagram</a>
+                <a href="https://www.linkedin.com/in/Th3-C0der" target="_blank" class="social-link"><i class="fab fa-linkedin"></i>LinkedIn</a>
+                <a href="https://ko-fi.com/th3coder" target="_blank" class="social-link"><i class="fas fa-coffee"></i>Support on Ko-fi</a>
+            </div>
+            <p>Made with ❤️ by <a href="https://github.com/Th3-C0der">Th3-C0der</a></p>
+        </footer>
+    </div>
+</body>
+</html> 
