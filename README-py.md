@@ -5,7 +5,7 @@
 [![PyPI version](https://badge.fury.io/py/dynaspark.svg)](https://badge.fury.io/py/dynaspark)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![API Status](https://img.shields.io/badge/API-Active-brightgreen)](https://dynaspark.onrender.com/status)
-[![Version](https://img.shields.io/badge/Version-1.0.0-blue.svg)](https://github.com/Th3-AI/DynaSpark)
+[![Version](https://img.shields.io/badge/Version-1.2.2.1-blue.svg)](https://github.com/Th3-AI/DynaSpark)
 [![API Documentation](https://img.shields.io/badge/API_Docs-DynaSpark-blue)](https://github.com/Th3-AI/DynaSpark/blob/main/README.md)
 
 The official Python client for the DynaSpark API - Your free AI generation platform
