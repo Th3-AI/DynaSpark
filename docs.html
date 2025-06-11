@@ -31,6 +31,7 @@
             color: var(--text-color);
             background-color: var(--background-color);
             display: flex;
+            min-height: 100vh;
         }
 
         .sidebar {
@@ -43,6 +44,22 @@
             border-right: 1px solid var(--border-color);
             padding: 2rem 1rem;
             overflow-y: auto;
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+
+        .sidebar-toggle {
+            display: none;
+            position: fixed;
+            top: 1rem;
+            left: 1rem;
+            z-index: 1001;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 0.5rem;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         .main-content {
@@ -50,6 +67,7 @@
             padding: 2rem;
             max-width: calc(100% - var(--sidebar-width));
             flex: 1;
+            transition: margin-left 0.3s ease;
         }
 
         .container {
@@ -350,12 +368,21 @@
 
         @media (max-width: 1024px) {
             .sidebar {
-                display: none;
+                transform: translateX(-100%);
+                display: block;
+            }
+
+            .sidebar.active {
+                transform: translateX(0);
             }
 
             .main-content {
                 margin-left: 0;
                 max-width: 100%;
+            }
+
+            .sidebar-toggle {
+                display: block;
             }
         }
 
@@ -380,10 +407,36 @@
             section {
                 padding: 1rem;
             }
+
+            /* Enhanced table responsiveness */
+            table {
+                display: block;
+                width: 100%;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                margin: 1rem 0;
+            }
+
+            table th,
+            table td {
+                min-width: 120px; /* Ensures columns don't get too narrow */
+                padding: 0.75rem;
+                white-space: normal; /* Allows text to wrap */
+            }
+
+            /* Ensure code blocks don't overflow */
+            pre {
+                max-width: 100%;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
         }
     </style>
 </head>
 <body>
+    <button class="sidebar-toggle" onclick="toggleSidebar()">
+        <i class="fas fa-bars"></i>
+    </button>
     <nav class="sidebar">
         <div class="toc">
             <h2><i class="fas fa-list"></i> Table of Contents</h2>
@@ -392,13 +445,13 @@
                     <ul class="sub-section">
                         <li><a href="#overview">Overview</a></li>
                         <li><a href="#authentication">Authentication</a></li>
-<li><a href="#base-url">Base URL</a></li>
+                        <li><a href="#base-url">Base URL</a></li>
                     </ul>
                 </li>
                 <li><a href="#endpoints">Endpoints</a>
                     <ul class="sub-section">
-<li><a href="#text-generation">Text Generation</a></li>
-<li><a href="#image-generation">Image Generation</a></li>
+                        <li><a href="#text-generation">Text Generation</a></li>
+                        <li><a href="#image-generation">Image Generation</a></li>
                         <li><a href="#audio-generation">Audio Generation</a></li>
                     </ul>
                 </li>
@@ -407,11 +460,11 @@
                         <li><a href="#text-parameters">Text Parameters</a></li>
                         <li><a href="#image-parameters">Image Parameters</a></li>
                         <li><a href="#audio-parameters">Audio Parameters</a></li>
-</ul>
-</li>
-<li><a href="#response-formats">Response Formats</a></li>
-<li><a href="#error-handling">Error Handling</a></li>
-<li><a href="#rate-limits">Rate Limits</a></li>
+                    </ul>
+                </li>
+                <li><a href="#response-formats">Response Formats</a></li>
+                <li><a href="#error-handling">Error Handling</a></li>
+                <li><a href="#rate-limits">Rate Limits</a></li>
                 <li><a href="#examples">Examples</a>
                     <ul class="sub-section">
                         <li><a href="#text-examples">Text Examples</a></li>
@@ -421,7 +474,7 @@
                 </li>
                 <li><a href="#troubleshooting">Troubleshooting</a></li>
                 <li><a href="#faq">FAQ</a></li>
-</ul>
+            </ul>
         </div>
     </nav>
 
@@ -434,7 +487,6 @@
                         <i class="fas fa-circle-check"></i> API Active
                     </a>
                     <span class="badge license"><i class="fas fa-shield"></i> MIT License</span>
-                   
                 </div>
                 <p>A powerful, free API for text, image, and audio generation - No API key required! 🆓</p>
             </header>
@@ -479,53 +531,53 @@
                     <div class="endpoint">
                         <span class="method">POST</span> <span class="url">/generate</span>
                     </div>
-<p>Generate text responses using various models and parameters.</p>
+                    <p>Generate text responses using various models and parameters.</p>
 
                     <h4>Request Body:</h4>
                     <table class="parameter-table">
-<tr>
-<th>Parameter</th>
-<th>Type</th>
-<th>Description</th>
-<th>Default</th>
-</tr>
-<tr>
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                            <th>Default</th>
+                        </tr>
+                        <tr>
                             <td><code>prompt</code></td>
-<td>string</td>
-<td>The input text to generate a response for</td>
-<td>Required</td>
-</tr>
-<tr>
-<td><code>model</code></td>
-<td>string</td>
-<td>Model to use for generation</td>
-<td>None</td>
-</tr>
-<tr>
-<td><code>temperature</code></td>
-<td>float</td>
-<td>Controls randomness (0.0-3.0)</td>
+                            <td>string</td>
+                            <td>The input text to generate a response for</td>
+                            <td>Required</td>
+                        </tr>
+                        <tr>
+                            <td><code>model</code></td>
+                            <td>string</td>
+                            <td>Model to use for generation</td>
+                            <td>None</td>
+                        </tr>
+                        <tr>
+                            <td><code>temperature</code></td>
+                            <td>float</td>
+                            <td>Controls randomness (0.0-3.0)</td>
                             <td>0.8</td>
-</tr>
-<tr>
-<td><code>top_p</code></td>
-<td>float</td>
-<td>Controls diversity (0.0-1.0)</td>
+                        </tr>
+                        <tr>
+                            <td><code>top_p</code></td>
+                            <td>float</td>
+                            <td>Controls diversity (0.0-1.0)</td>
                             <td>0.9</td>
-</tr>
-<tr>
-<td><code>presence_penalty</code></td>
-<td>float</td>
-<td>Penalizes repeated tokens (-2.0-2.0)</td>
+                        </tr>
+                        <tr>
+                            <td><code>presence_penalty</code></td>
+                            <td>float</td>
+                            <td>Penalizes repeated tokens (-2.0-2.0)</td>
                             <td>0.0</td>
-</tr>
-<tr>
-<td><code>frequency_penalty</code></td>
-<td>float</td>
-<td>Penalizes frequent tokens (-2.0-2.0)</td>
+                        </tr>
+                        <tr>
+                            <td><code>frequency_penalty</code></td>
+                            <td>float</td>
+                            <td>Penalizes frequent tokens (-2.0-2.0)</td>
                             <td>0.0</td>
-</tr>
-</table>
+                        </tr>
+                    </table>
 
                     <div class="example-block">
                         <h4>Example Request:</h4>
@@ -545,53 +597,53 @@
                     <div class="endpoint">
                         <span class="method">POST</span> <span class="url">/generate-image</span>
                     </div>
-<p>Generate images from text descriptions.</p>
+                    <p>Generate images from text descriptions.</p>
 
                     <h4>Request Body:</h4>
                     <table class="parameter-table">
-<tr>
-<th>Parameter</th>
-<th>Type</th>
-<th>Description</th>
-<th>Default</th>
-</tr>
-<tr>
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                            <th>Default</th>
+                        </tr>
+                        <tr>
                             <td><code>prompt</code></td>
-<td>string</td>
-<td>The prompt to generate an image for</td>
-<td>Required</td>
-</tr>
-<tr>
-<td><code>width</code></td>
-<td>integer</td>
-<td>Image width (64-2048)</td>
-<td>768</td>
-</tr>
-<tr>
-<td><code>height</code></td>
-<td>integer</td>
-<td>Image height (64-2048)</td>
-<td>768</td>
-</tr>
-<tr>
-<td><code>model</code></td>
-<td>string</td>
-<td>Model to use (flux/turbo/gptimage)</td>
+                            <td>string</td>
+                            <td>The prompt to generate an image for</td>
+                            <td>Required</td>
+                        </tr>
+                        <tr>
+                            <td><code>width</code></td>
+                            <td>integer</td>
+                            <td>Image width (64-2048)</td>
+                            <td>768</td>
+                        </tr>
+                        <tr>
+                            <td><code>height</code></td>
+                            <td>integer</td>
+                            <td>Image height (64-2048)</td>
+                            <td>768</td>
+                        </tr>
+                        <tr>
+                            <td><code>model</code></td>
+                            <td>string</td>
+                            <td>Model to use (flux/turbo/gptimage)</td>
                             <td>flux</td>
-</tr>
-<tr>
-<td><code>nologo</code></td>
-<td>boolean</td>
-<td>Exclude watermark</td>
-<td>false</td>
-</tr>
-<tr>
-<td><code>wm</code></td>
-<td>string</td>
+                        </tr>
+                        <tr>
+                            <td><code>nologo</code></td>
+                            <td>boolean</td>
+                            <td>Exclude watermark</td>
+                            <td>false</td>
+                        </tr>
+                        <tr>
+                            <td><code>wm</code></td>
+                            <td>string</td>
                             <td>Custom watermark text</td>
                             <td>null</td>
-</tr>
-</table>
+                        </tr>
+                    </table>
 
                     <div class="example-block">
                         <h4>Example Request:</h4>
@@ -616,56 +668,56 @@
 
                     <h4>Request Body:</h4>
                     <table class="parameter-table">
-<tr>
-<th>Parameter</th>
-<th>Type</th>
-<th>Description</th>
-<th>Default</th>
-</tr>
-<tr>
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                            <th>Default</th>
+                        </tr>
+                        <tr>
                             <td><code>text</code></td>
-<td>string</td>
+                            <td>string</td>
                             <td>The text to convert to speech</td>
-<td>Required</td>
-</tr>
-<tr>
-<td><code>voice</code></td>
-<td>string</td>
-<td>Voice to use</td>
+                            <td>Required</td>
+                        </tr>
+                        <tr>
+                            <td><code>voice</code></td>
+                            <td>string</td>
+                            <td>Voice to use</td>
                             <td>alloy</td>
-</tr>
-</table>
+                        </tr>
+                    </table>
 
                     <h4>Available Voices:</h4>
                     <table class="parameter-table">
-<tr>
-<th>Voice</th>
-<th>Description</th>
-</tr>
-<tr>
-<td><code>alloy</code></td>
-<td>Balanced, natural-sounding voice (default)</td>
-</tr>
-<tr>
-<td><code>echo</code></td>
-<td>Clear, professional voice</td>
-</tr>
-<tr>
-<td><code>fable</code></td>
-<td>Warm, engaging voice</td>
-</tr>
-<tr>
-<td><code>onyx</code></td>
-<td>Deep, authoritative voice</td>
-</tr>
-<tr>
-<td><code>nova</code></td>
-<td>Bright, energetic voice</td>
-</tr>
-<tr>
-<td><code>shimmer</code></td>
-<td>Soft, melodic voice</td>
-</tr>
+                        <tr>
+                            <th>Voice</th>
+                            <th>Description</th>
+                        </tr>
+                        <tr>
+                            <td><code>alloy</code></td>
+                            <td>Balanced, natural-sounding voice (default)</td>
+                        </tr>
+                        <tr>
+                            <td><code>echo</code></td>
+                            <td>Clear, professional voice</td>
+                        </tr>
+                        <tr>
+                            <td><code>fable</code></td>
+                            <td>Warm, engaging voice</td>
+                        </tr>
+                        <tr>
+                            <td><code>onyx</code></td>
+                            <td>Deep, authoritative voice</td>
+                        </tr>
+                        <tr>
+                            <td><code>nova</code></td>
+                            <td>Bright, energetic voice</td>
+                        </tr>
+                        <tr>
+                            <td><code>shimmer</code></td>
+                            <td>Soft, melodic voice</td>
+                        </tr>
                     </table>
 
                     <div class="example-block">
@@ -736,7 +788,7 @@
                         <td><code>500</code></td>
                         <td>Internal Server Error</td>
                     </tr>
-</table>
+                </table>
 
                 <div class="example-block">
                     <h4>Error Response Example:</h4>
@@ -763,7 +815,7 @@
                         <li>100 requests per hour</li>
                         <li>Maximum 10 concurrent requests</li>
                         <li>Rate limit headers included in responses</li>
-</ul>
+                    </ul>
                 </div>
 
                 <h3>Rate Limit Headers</h3>
@@ -918,7 +970,34 @@ done</code></pre>
                 </div>
                 <p>Made with ❤️ by <a href="https://github.com/Th3-C0der">Th3-C0der</a></p>
             </footer>
-</div> 
+        </div>
     </main>
+
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.querySelector('.sidebar');
+            sidebar.classList.toggle('active');
+        }
+
+        document.addEventListener('click', function(event) {
+            const sidebar = document.querySelector('.sidebar');
+            const sidebarToggle = document.querySelector('.sidebar-toggle');
+            
+            if (window.innerWidth <= 768 && 
+                !sidebar.contains(event.target) && 
+                !sidebarToggle.contains(event.target) &&
+                sidebar.classList.contains('active')) {
+                sidebar.classList.remove('active');
+            }
+        });
+
+        document.querySelectorAll('.sidebar a').forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth <= 768) {
+                    document.querySelector('.sidebar').classList.remove('active');
+                }
+            });
+        });
+    </script>
 </body>
 </html> 

@@ -47,7 +47,7 @@
             font-family: 'Inter', sans-serif;
             max-width: 1000px;
             margin: 0 auto;
-            padding: 2rem 1rem;
+            padding: 1rem;
             background-color: var(--background-color);
             color: var(--text-color);
             line-height: 1.6;
@@ -57,7 +57,7 @@
             background-color: var(--card-bg);
             border-radius: 16px;
             box-shadow: 0 4px 6px -1px var(--shadow-color);
-            padding: 2rem;
+            padding: 1.5rem;
             margin-bottom: 2rem;
             max-width: 800px;
             margin-left: auto;
@@ -389,47 +389,182 @@
 
             .sidebar {
                 position: static;
+                margin-bottom: 1.5rem;
+                padding: 1rem;
+            }
+
+            .parameters-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 1rem;
             }
         }
 
         @media (max-width: 640px) {
-            body {
-                padding: 1rem 0.5rem;
+            .content-wrapper {
+                gap: 1rem;
             }
 
-            .container {
-                padding: 1rem;
-            }
-
-            .watermark-group {
-                grid-template-columns: 1fr;
-            }
-
-            h1 {
-                font-size: 1.75rem;
-            }
-
-            h2 {
-                font-size: 1.25rem;
-            }
-
-            .tab {
-                padding: 0.5rem 1rem;
-                min-width: 100px;
-                font-size: 0.9rem;
+            .sidebar {
+                padding: 0.75rem;
+                border-radius: 8px;
             }
 
             .parameters-grid {
                 grid-template-columns: 1fr;
+                gap: 0.75rem;
+            }
+
+            .model-selector {
+                padding: 0.75rem;
+                margin-bottom: 0.75rem;
+            }
+
+            .input-group {
+                margin-bottom: 0.5rem;
+            }
+
+            .input-group label {
+                font-size: 0.85rem;
+                margin-bottom: 0.2rem;
+            }
+
+            input[type="text"],
+            input[type="number"],
+            select,
+            textarea {
+                padding: 0.5rem 0.75rem;
+                font-size: 0.9rem;
+            }
+
+            .watermark-group {
+                grid-template-columns: 1fr;
+                gap: 0.5rem;
+                margin-bottom: 0.75rem;
+            }
+
+            .watermark-toggle {
+                margin-bottom: 0.5rem;
+            }
+
+            .voice-selector {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.5rem;
+                padding: 0.75rem;
+            }
+
+            .voice-option {
+                padding: 0.5rem;
+                font-size: 0.85rem;
+            }
+
+            #tabs {
+                flex-wrap: wrap;
+                gap: 0.25rem;
+                padding: 0.25rem;
+            }
+
+            .tab {
+                padding: 0.5rem 0.75rem;
+                min-width: auto;
+                flex: 1;
+                font-size: 0.85rem;
+            }
+
+            .container {
+                padding: 0.75rem;
+                margin-bottom: 0.75rem;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+                margin-bottom: 1rem;
+            }
+
+            h2 {
+                font-size: 1.1rem;
+                margin-bottom: 0.75rem;
+            }
+
+            #chat-box {
+                height: 300px;
+                margin-bottom: 0.75rem;
             }
 
             .message {
-                max-width: 95%;
+                padding: 0.625rem;
+                font-size: 0.85rem;
+                max-width: 90%;
             }
 
-            .theme-toggle {
-                top: 0.5rem;
-                right: 0.5rem;
+            .button-group {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .button-group button {
+                width: 100%;
+            }
+
+            .social-links {
+                gap: 0.5rem;
+            }
+
+            .social-link {
+                padding: 0.4rem 0.75rem;
+                font-size: 0.85rem;
+            }
+        }
+
+        /* Add collapsible sidebar for mobile */
+        @media (max-width: 768px) {
+            .sidebar {
+                position: relative;
+                overflow: hidden;
+                max-height: 0;
+                transition: max-height 0.3s ease-out;
+                margin: 0;
+                padding: 0;
+                border: none;
+            }
+
+            .sidebar.active {
+                max-height: 2000px;
+                padding: 1rem;
+                margin-bottom: 1rem;
+                border: 1px solid var(--border-color);
+                border-radius: 8px;
+            }
+
+            .sidebar-toggle {
+                display: block;
+                width: 100%;
+                padding: 0.75rem;
+                background-color: var(--hover-bg);
+                border: 1px solid var(--border-color);
+                border-radius: 8px;
+                margin-bottom: 1rem;
+                cursor: pointer;
+                text-align: left;
+                font-weight: 500;
+                color: var(--text-color);
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .sidebar-toggle i {
+                transition: transform 0.3s ease;
+            }
+
+            .sidebar-toggle.active i {
+                transform: rotate(180deg);
+            }
+        }
+
+        @media (min-width: 769px) {
+            .sidebar-toggle {
+                display: none;
             }
         }
 
@@ -532,6 +667,22 @@
         .theme-toggle i {
             font-size: 1.25rem;
         }
+
+        /* Additional touch-friendly styles */
+        @media (hover: none) {
+            .tab,
+            button,
+            .social-link,
+            .theme-toggle {
+                -webkit-tap-highlight-color: transparent;
+            }
+
+            .tab:active,
+            button:active,
+            .social-link:active {
+                transform: scale(0.98);
+            }
+        }
     </style>
 </head>
 <body>
@@ -546,11 +697,16 @@
             <div id="audio-tab" class="tab" onclick="switchTab('audio')">Audio Generator</div>
         </div>
 
+        <div class="sidebar-toggle" onclick="toggleSidebar()">
+            <span>Settings</span>
+            <i class="fas fa-chevron-down"></i>
+        </div>
+
         <div id="content">
             <!-- Chat Tab -->
             <div id="chat-content" class="active">
                 <div class="content-wrapper">
-                    <div class="sidebar">
+                    <div class="sidebar" id="chat-sidebar">
                         <h3 style="margin-bottom: 1rem; font-size: 1.1rem;">Settings</h3>
                         <div class="model-selector">
                             <div class="input-group">
@@ -608,7 +764,7 @@
             <!-- Image Tab -->
             <div id="image-content">
                 <div class="content-wrapper">
-                    <div class="sidebar">
+                    <div class="sidebar" id="image-sidebar">
                         <h3 style="margin-bottom: 1rem; font-size: 1.1rem;">Settings</h3>
                         <div class="model-selector">
                             <div class="input-group">
@@ -666,7 +822,7 @@
             <!-- Audio Tab -->
             <div id="audio-content">
                 <div class="content-wrapper">
-                    <div class="sidebar">
+                    <div class="sidebar" id="audio-sidebar">
                         <h3 style="margin-bottom: 1rem; font-size: 1.1rem;">Voice Selection</h3>
                         <div class="voice-selector">
                             <div class="voice-option selected" data-voice="alloy">Alloy</div>
@@ -731,6 +887,13 @@
 
         // Tab switching
         function switchTab(tab) {
+            // Close all sidebars when switching tabs
+            document.querySelectorAll('.sidebar').forEach(sidebar => {
+                sidebar.classList.remove('active');
+            });
+            document.querySelector('.sidebar-toggle').classList.remove('active');
+            
+            // Switch tabs as before
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
             document.querySelectorAll('#content > div').forEach(c => c.classList.remove('active'));
             document.getElementById(`${tab}-tab`).classList.add('active');
@@ -974,6 +1137,36 @@
 
         // Initial rate limit check
         updateRateLimitInfo();
+
+        function toggleSidebar() {
+            const activeTab = document.querySelector('#content > div.active');
+            const activeSidebar = activeTab.querySelector('.sidebar');
+            const toggle = document.querySelector('.sidebar-toggle');
+            
+            // Close all other sidebars first
+            document.querySelectorAll('.sidebar').forEach(sidebar => {
+                if (sidebar !== activeSidebar) {
+                    sidebar.classList.remove('active');
+                }
+            });
+            
+            // Toggle the active sidebar
+            activeSidebar.classList.toggle('active');
+            toggle.classList.toggle('active');
+        }
+
+        // Initialize sidebar state on mobile
+        function initMobileSidebar() {
+            if (window.innerWidth <= 768) {
+                document.querySelectorAll('.sidebar').forEach(sidebar => {
+                    sidebar.classList.remove('active');
+                });
+            }
+        }
+
+        // Call on load and resize
+        window.addEventListener('load', initMobileSidebar);
+        window.addEventListener('resize', initMobileSidebar);
     </script>
 </body>
 </html>

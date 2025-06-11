@@ -31,6 +31,7 @@
             color: var(--text-color);
             background-color: var(--background-color);
             display: flex;
+            min-height: 100vh;
         }
 
         .sidebar {
@@ -43,6 +44,22 @@
             border-right: 1px solid var(--border-color);
             padding: 2rem 1rem;
             overflow-y: auto;
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+
+        .sidebar-toggle {
+            display: none;
+            position: fixed;
+            top: 1rem;
+            left: 1rem;
+            z-index: 1001;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 0.5rem;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         .main-content {
@@ -50,6 +67,7 @@
             padding: 2rem;
             max-width: calc(100% - var(--sidebar-width));
             flex: 1;
+            transition: margin-left 0.3s ease;
         }
 
         .container {
@@ -336,12 +354,21 @@
 
         @media (max-width: 1024px) {
             .sidebar {
-                display: none;
+                transform: translateX(-100%);
+                display: block;
+            }
+
+            .sidebar.active {
+                transform: translateX(0);
             }
 
             .main-content {
                 margin-left: 0;
                 max-width: 100%;
+            }
+
+            .sidebar-toggle {
+                display: block;
             }
         }
 
@@ -366,10 +393,155 @@
             section {
                 padding: 1rem;
             }
+
+            /* Enhanced table responsiveness */
+            table {
+                display: block;
+                width: 100%;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                margin: 1rem 0;
+            }
+
+            table th,
+            table td {
+                min-width: 120px; /* Ensures columns don't get too narrow */
+                padding: 0.75rem;
+                white-space: normal; /* Allows text to wrap */
+            }
+
+            /* Ensure code blocks don't overflow */
+            pre {
+                max-width: 100%;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+        }
+
+        /* Mobile Responsive Styles */
+        @media (max-width: 768px) {
+            .sidebar-toggle {
+                display: block;
+            }
+
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.active {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+                max-width: 100%;
+                padding: 1rem;
+            }
+
+            .container {
+                padding: 0 0.5rem;
+            }
+
+            h1 {
+                font-size: 1.75rem;
+                margin-top: 3rem;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            h3 {
+                font-size: 1.25rem;
+            }
+
+            .header {
+                margin-bottom: 2rem;
+                padding-bottom: 1rem;
+            }
+
+            .nav-buttons {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .nav-button {
+                width: 100%;
+                text-align: center;
+            }
+
+            pre {
+                padding: 0.75rem;
+                font-size: 0.85rem;
+            }
+
+            .note, .warning {
+                padding: 1rem;
+                margin: 1rem 0;
+            }
+
+            .footer {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+                padding: 1rem 0;
+            }
+
+            .social-links {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 0.5rem;
+            }
+
+            .social-link {
+                padding: 0.5rem 0.75rem;
+                font-size: 0.9rem;
+            }
+
+            .toc ul {
+                padding-left: 1rem;
+            }
+
+            .toc a {
+                padding: 0.5rem 0;
+                font-size: 0.9rem;
+            }
+
+            .parameter-table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+
+            .parameter-table th,
+            .parameter-table td {
+                padding: 0.5rem;
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Additional touch-friendly styles */
+        @media (hover: none) {
+            .nav-button,
+            .social-link,
+            .sidebar-toggle,
+            .toc a {
+                -webkit-tap-highlight-color: transparent;
+            }
+
+            .nav-button:active,
+            .social-link:active,
+            .sidebar-toggle:active,
+            .toc a:active {
+                transform: scale(0.98);
+            }
         }
     </style>
 </head>
 <body>
+    <button class="sidebar-toggle" onclick="toggleSidebar()">
+        <i class="fas fa-bars"></i>
+    </button>
     <nav class="sidebar">
         <div class="toc">
             <h2><i class="fas fa-list"></i> Table of Contents</h2>
@@ -913,5 +1085,35 @@ for i, voice in enumerate(voices):
             </footer>
         </div>
     </main>
+
+    <script>
+        // Add this at the end of your existing script
+        function toggleSidebar() {
+            const sidebar = document.querySelector('.sidebar');
+            sidebar.classList.toggle('active');
+        }
+
+        // Close sidebar when clicking outside on mobile
+        document.addEventListener('click', function(event) {
+            const sidebar = document.querySelector('.sidebar');
+            const sidebarToggle = document.querySelector('.sidebar-toggle');
+            
+            if (window.innerWidth <= 768 && 
+                !sidebar.contains(event.target) && 
+                !sidebarToggle.contains(event.target) &&
+                sidebar.classList.contains('active')) {
+                sidebar.classList.remove('active');
+            }
+        });
+
+        // Close sidebar when clicking a link on mobile
+        document.querySelectorAll('.sidebar a').forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth <= 768) {
+                    document.querySelector('.sidebar').classList.remove('active');
+                }
+            });
+        });
+    </script>
 </body>
 </html> 
