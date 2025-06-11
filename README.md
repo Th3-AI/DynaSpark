@@ -9,7 +9,7 @@
 
 The official documentation for the DynaSpark API - Your free AI generation platform
 
-[Try it Now](https://th3-ai.github.io/DynaSpark) | [Try DynaSpark AI](https://DynaSpark.onrender.com) | [Documentation](https://th3-ai.github.io/DynaSpark/docs.html) | [Python Client](https://github.com/Th3-AI/DynaSpark/blob/main/README-py.md) | [Report Issues](https://github.com/Th3-AI/DynaSpark/issues)
+[Try API](https://th3-ai.github.io/DynaSpark) | [Try DynaSpark AI](https://DynaSpark.onrender.com) | [Documentation](https://th3-ai.github.io/DynaSpark/docs.html) | [Python Client](https://github.com/Th3-AI/DynaSpark/blob/main/README-py.md) | [Report Issues](https://github.com/Th3-AI/DynaSpark/issues)
 
 </div>
 
