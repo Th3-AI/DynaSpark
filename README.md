@@ -5,10 +5,11 @@
 [![API Status](https://img.shields.io/badge/API-Active-brightgreen)](https://dynaspark.onrender.com/status)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Version](https://img.shields.io/badge/Version-1.0.0-blue.svg)](https://github.com/Th3-AI/DynaSpark)
+[![Python Client](https://img.shields.io/badge/Python_Client-Docs-blue)](https://github.com/Th3-AI/DynaSpark/blob/main/README-py.md)
 
 The official documentation for the DynaSpark API - Your free AI generation platform
 
-[Try it Now](https://dynaspark.onrender.com) | [Documentation](https://dynaspark.onrender.com/docs.html) | [Report Issues](https://github.com/Th3-AI/DynaSpark/issues)
+[Try it Now](https://th3-ai.github.io/DynaSpark) | [Try DynaSpark AI](https://DynaSpark.onrender.com) | [Documentation](https://th3-ai.github.io/DynaSpark/docs.html) | [Python Client](https://github.com/Th3-AI/DynaSpark/blob/main/README-py.md) | [Report Issues](https://github.com/Th3-AI/DynaSpark/issues)
 
 </div>
 
@@ -27,6 +28,7 @@ The official documentation for the DynaSpark API - Your free AI generation platf
 - [Examples](#examples)
 - [API Status](#api-status)
 - [Support](#support)
+- [Python Client](#python-client)
 
 ## Overview
 
@@ -268,17 +270,43 @@ For API support, feature requests, or bug reports:
 - GitHub Issues: [https://github.com/Th3-AI/DynaSpark/issues](https://github.com/Th3-AI/DynaSpark/issues)
 - Email: [dvp.ai.ml@gmail.com](mailto:dvp.ai.ml@gmail.com)
 
+## Python Client
+
+For a more convenient way to use the DynaSpark API in Python, check out our official Python client:
+
+[![Python Client](https://img.shields.io/badge/Python_Client-Docs-blue)](https://github.com/Th3-AI/DynaSpark/blob/main/README-py.md)
+
+The Python client provides:
+- 🐍 Simple Python interface
+- 📦 Easy installation via pip
+- 🎯 Full API support
+- 🔧 Type hints and IDE integration
+- 🛡️ Built-in error handling
+
+Quick example:
+```python
+from dynaspark import DynaSpark
+
+# Initialize client (no API key required)
+client = DynaSpark()
+
+# Generate text
+response = client.generate_text("Hello, world!")
+print(response.text)
+```
+
+[View Python Client Documentation →](https://github.com/Th3-AI/DynaSpark/blob/main/README-py.md)
+
 ---
 
 <div align="center">
 
+Made with ❤️ by [Th3-C0der](https://github.com/Th3-C0der)
 
 [![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Th3-C0der)
 [![YouTube](https://img.shields.io/badge/YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://youtube.com/@Th3Coder)
 [![Instagram](https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white)](https://instagram.com/th3_c0der)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/Th3-C0der)
 [![Ko-fi](https://img.shields.io/badge/Ko--fi-F16061?style=for-the-badge&logo=ko-fi&logoColor=white)](https://ko-fi.com/th3coder)
-
-Made with ❤️ by [Th3-C0der](https://github.com/Th3-C0der)
 
 </div> 

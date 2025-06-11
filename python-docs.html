@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DynaSpark Python Client Documentation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #0073b7;
+            --secondary-color: #005a94;
+            --background-color: #f8fafc;
+            --text-color: #1e293b;
+            --border-color: #e2e8f0;
+            --code-bg: #f1f5f9;
+            --card-bg: #ffffff;
+            --hover-bg: #f1f5f9;
+            --sidebar-width: 280px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--background-color);
+            display: flex;
+        }
+
+        .sidebar {
+            width: var(--sidebar-width);
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            background-color: var(--card-bg);
+            border-right: 1px solid var(--border-color);
+            padding: 2rem 1rem;
+            overflow-y: auto;
+        }
+
+        .main-content {
+            margin-left: var(--sidebar-width);
+            padding: 2rem;
+            max-width: calc(100% - var(--sidebar-width));
+            flex: 1;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--text-color);
+        }
+
+        .badges {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.2s ease;
+        }
+
+        .badge:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .badge.python {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .badge.license {
+            background-color: #eab308;
+            color: white;
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .nav-button {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            background-color: var(--hover-bg);
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-button:hover {
+            background-color: var(--primary-color);
+            color: white;
+            transform: translateY(-1px);
+        }
+
+        .toc {
+            margin-top: 2rem;
+        }
+
+        .toc h2 {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            color: var(--text-color);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .toc ul {
+            list-style: none;
+        }
+
+        .toc li {
+            margin-bottom: 0.5rem;
+        }
+
+        .toc a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-size: 0.95rem;
+            display: block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .toc a:hover {
+            background-color: var(--hover-bg);
+            color: var(--primary-color);
+        }
+
+        .toc .sub-section {
+            margin-left: 1rem;
+            padding-left: 0.5rem;
+            border-left: 2px solid var(--border-color);
+        }
+
+        section {
+            margin-bottom: 3rem;
+            padding: 2rem;
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        section h2 {
+            font-size: 1.75rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-color);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        section h3 {
+            font-size: 1.5rem;
+            margin: 2rem 0 1rem;
+            color: var(--text-color);
+        }
+
+        section h4 {
+            font-size: 1.25rem;
+            margin: 1.5rem 0 1rem;
+            color: var(--text-color);
+        }
+
+        p {
+            margin-bottom: 1rem;
+        }
+
+        code {
+            background-color: var(--code-bg);
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.9rem;
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            padding: 1rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1rem 0;
+        }
+
+        pre code {
+            background-color: transparent;
+            padding: 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            background-color: var(--hover-bg);
+            font-weight: 600;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .note {
+            background-color: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .warning {
+            background-color: #fee2e2;
+            border-left: 4px solid #ef4444;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 1rem 0;
+            flex-wrap: wrap;
+        }
+
+        .social-link {
+            color: var(--text-color);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            background-color: var(--hover-bg);
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .social-link i {
+            font-size: 1.1rem;
+            width: 1.25rem;
+            text-align: center;
+        }
+
+        .social-link:hover {
+            background-color: var(--primary-color);
+            color: white;
+            transform: translateY(-1px);
+        }
+
+        .method-signature {
+            background-color: var(--code-bg);
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            font-family: monospace;
+        }
+
+        .parameter-table {
+            margin: 1rem 0;
+        }
+
+        .parameter-table th {
+            width: 25%;
+        }
+
+        .example-block {
+            margin: 1.5rem 0;
+        }
+
+        .example-block h4 {
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+
+        @media (max-width: 1024px) {
+            .sidebar {
+                display: none;
+            }
+
+            .main-content {
+                margin-left: 0;
+                max-width: 100%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .badges {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .nav-buttons {
+                flex-direction: column;
+            }
+
+            section {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="sidebar">
+        <div class="toc">
+            <h2><i class="fas fa-list"></i> Table of Contents</h2>
+            <ul>
+                <li><a href="#getting-started">Getting Started</a>
+                    <ul class="sub-section">
+                        <li><a href="#installation">Installation</a></li>
+                        <li><a href="#quick-start">Quick Start</a></li>
+                        <li><a href="#authentication">Authentication</a></li>
+                    </ul>
+                </li>
+                <li><a href="#api-reference">API Reference</a>
+                    <ul class="sub-section">
+                        <li><a href="#client-initialization">Client Initialization</a></li>
+                        <li><a href="#text-generation">Text Generation</a></li>
+                        <li><a href="#image-generation">Image Generation</a></li>
+                        <li><a href="#audio-generation">Audio Generation</a></li>
+                    </ul>
+                </li>
+                <li><a href="#advanced-usage">Advanced Usage</a>
+                    <ul class="sub-section">
+                        <li><a href="#error-handling">Error Handling</a></li>
+                        <li><a href="#rate-limiting">Rate Limiting</a></li>
+                        <li><a href="#streaming">Streaming Responses</a></li>
+                    </ul>
+                </li>
+                <li><a href="#examples">Examples</a>
+                    <ul class="sub-section">
+                        <li><a href="#text-examples">Text Examples</a></li>
+                        <li><a href="#image-examples">Image Examples</a></li>
+                        <li><a href="#audio-examples">Audio Examples</a></li>
+                    </ul>
+                </li>
+                <li><a href="#troubleshooting">Troubleshooting</a></li>
+                <li><a href="#faq">FAQ</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <div class="container">
+            <header class="header">
+                <h1>🐍 DynaSpark Python Client</h1>
+                <div class="badges">
+                    <a href="https://badge.fury.io/py/dynaspark" target="_blank" class="badge python">
+                        <i class="fab fa-python"></i> PyPI Version
+                    </a>
+                    <span class="badge license"><i class="fas fa-shield"></i> MIT License</span>
+                </div>
+                <p>A powerful, free Python client for the DynaSpark API - No API key required! 🆓</p>
+            </header>
+
+            <div class="nav-buttons">
+                <a href="docs.html" class="nav-button"><i class="fas fa-book"></i> API Documentation</a>
+                <a href="index.html" class="nav-button"><i class="fas fa-home"></i> Home</a>
+            </div>
+
+            <section id="getting-started">
+                <h2><i class="fas fa-rocket"></i> Getting Started</h2>
+                
+                <div id="installation">
+                    <h3>Installation</h3>
+                    <p>Install the package using pip:</p>
+                    <pre><code>pip install dynaspark</code></pre>
+                    <div class="note">
+                        <strong>Note:</strong> The package requires Python 3.7 or higher.
+                    </div>
+                </div>
+
+                <div id="quick-start">
+                    <h3>Quick Start</h3>
+                    <p>Here's a simple example to get you started:</p>
+                    <pre><code>from dynaspark import DynaSpark
+
+# Initialize client (no API key needed)
+ds = DynaSpark()
+
+# Generate text
+response = ds.generate_response("What is artificial intelligence?")
+print(response.get('response', ''))
+
+# Generate image
+image_url = ds.generate_image("A beautiful sunset over mountains")
+print(f"Generated image: {image_url}")
+
+# Generate audio response
+audio_data = ds.generate_audio_response("Hello, this is a test!")
+ds.save_audio(audio_data, "response.mp3")</code></pre>
+                </div>
+
+                <div id="authentication">
+                    <h3>Authentication</h3>
+                    <p>Currently, no API key is required to use the DynaSpark API. However, you can specify your own API key if needed:</p>
+                    <pre><code>from dynaspark import DynaSpark
+
+# Initialize with custom API key (optional)
+ds = DynaSpark(api_key="your_api_key")</code></pre>
+                </div>
+            </section>
+
+            <section id="api-reference">
+                <h2><i class="fas fa-code"></i> API Reference</h2>
+
+                <div id="client-initialization">
+                    <h3>Client Initialization</h3>
+                    <div class="method-signature">
+                        <code>DynaSpark(api_key: str = None, base_url: str = None)</code>
+                    </div>
+                    <p>Initialize a new DynaSpark client instance.</p>
+                    
+                    <h4>Parameters:</h4>
+                    <table class="parameter-table">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                            <th>Default</th>
+                        </tr>
+                        <tr>
+                            <td><code>api_key</code></td>
+                            <td>str</td>
+                            <td>Your API key (optional)</td>
+                            <td>None</td>
+                        </tr>
+                        <tr>
+                            <td><code>base_url</code></td>
+                            <td>str</td>
+                            <td>Custom API base URL</td>
+                            <td>https://dynaspark.onrender.com/api</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div id="text-generation">
+                    <h3>Text Generation</h3>
+                    <div class="method-signature">
+                        <code>generate_response(prompt: str, **kwargs) -> dict</code>
+                    </div>
+                    <p>Generate text responses using various models and parameters.</p>
+
+                    <h4>Parameters:</h4>
+                    <table class="parameter-table">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                            <th>Default</th>
+                        </tr>
+                        <tr>
+                            <td><code>prompt</code></td>
+                            <td>str</td>
+                            <td>The input text to generate a response for</td>
+                            <td>Required</td>
+                        </tr>
+                        <tr>
+                            <td><code>model</code></td>
+                            <td>str</td>
+                            <td>Model to use for generation</td>
+                            <td>None</td>
+                        </tr>
+                        <tr>
+                            <td><code>temperature</code></td>
+                            <td>float</td>
+                            <td>Controls randomness (0.0-3.0)</td>
+                            <td>0.8</td>
+                        </tr>
+                        <tr>
+                            <td><code>top_p</code></td>
+                            <td>float</td>
+                            <td>Controls diversity (0.0-1.0)</td>
+                            <td>0.9</td>
+                        </tr>
+                        <tr>
+                            <td><code>presence_penalty</code></td>
+                            <td>float</td>
+                            <td>Penalizes repeated tokens (-2.0-2.0)</td>
+                            <td>0.0</td>
+                        </tr>
+                        <tr>
+                            <td><code>frequency_penalty</code></td>
+                            <td>float</td>
+                            <td>Penalizes frequent tokens (-2.0-2.0)</td>
+                            <td>0.0</td>
+                        </tr>
+                    </table>
+
+                    <div class="example-block">
+                        <h4>Example:</h4>
+                        <pre><code># Basic usage
+response = ds.generate_response("What is Python?")
+
+# Advanced usage with parameters
+response = ds.generate_response(
+    "Write a poem about technology",
+    model="mistral",
+    temperature=0.8,
+    top_p=0.9,
+    presence_penalty=0.6,
+    frequency_penalty=0.6
+)</code></pre>
+                    </div>
+                </div>
+
+                <div id="image-generation">
+                    <h3>Image Generation</h3>
+                    <div class="method-signature">
+                        <code>generate_image(prompt: str, **kwargs) -> str</code>
+                    </div>
+                    <p>Generate images from text descriptions.</p>
+
+                    <h4>Parameters:</h4>
+                    <table class="parameter-table">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                            <th>Default</th>
+                        </tr>
+                        <tr>
+                            <td><code>prompt</code></td>
+                            <td>str</td>
+                            <td>The prompt to generate an image for</td>
+                            <td>Required</td>
+                        </tr>
+                        <tr>
+                            <td><code>width</code></td>
+                            <td>int</td>
+                            <td>Image width (64-2048)</td>
+                            <td>768</td>
+                        </tr>
+                        <tr>
+                            <td><code>height</code></td>
+                            <td>int</td>
+                            <td>Image height (64-2048)</td>
+                            <td>768</td>
+                        </tr>
+                        <tr>
+                            <td><code>model</code></td>
+                            <td>str</td>
+                            <td>Model to use (flux/turbo/gptimage)</td>
+                            <td>flux</td>
+                        </tr>
+                        <tr>
+                            <td><code>nologo</code></td>
+                            <td>bool</td>
+                            <td>Exclude watermark</td>
+                            <td>False</td>
+                        </tr>
+                        <tr>
+                            <td><code>wm</code></td>
+                            <td>str</td>
+                            <td>Custom watermark text</td>
+                            <td>None</td>
+                        </tr>
+                    </table>
+
+                    <div class="example-block">
+                        <h4>Example:</h4>
+                        <pre><code># Basic usage
+image_url = ds.generate_image("A serene mountain landscape")
+
+# Advanced usage
+image_url = ds.generate_image(
+    "A futuristic city with flying cars",
+    width=1024,
+    height=768,
+    model="flux",
+    nologo=True,
+    wm="DynaSpark"
+)</code></pre>
+                    </div>
+                </div>
+
+                <div id="audio-generation">
+                    <h3>Audio Generation</h3>
+                    <div class="method-signature">
+                        <code>generate_audio_response(text: str, voice: str = "alloy") -> bytes</code>
+                    </div>
+                    <p>Generate audio responses from text using various voices.</p>
+
+                    <h4>Parameters:</h4>
+                    <table class="parameter-table">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                            <th>Default</th>
+                        </tr>
+                        <tr>
+                            <td><code>text</code></td>
+                            <td>str</td>
+                            <td>The text to convert to speech</td>
+                            <td>Required</td>
+                        </tr>
+                        <tr>
+                            <td><code>voice</code></td>
+                            <td>str</td>
+                            <td>Voice to use</td>
+                            <td>alloy</td>
+                        </tr>
+                    </table>
+
+                    <h4>Available Voices:</h4>
+                    <table class="parameter-table">
+                        <tr>
+                            <th>Voice</th>
+                            <th>Description</th>
+                        </tr>
+                        <tr>
+                            <td><code>alloy</code></td>
+                            <td>Balanced, natural-sounding voice (default)</td>
+                        </tr>
+                        <tr>
+                            <td><code>echo</code></td>
+                            <td>Clear, professional voice</td>
+                        </tr>
+                        <tr>
+                            <td><code>fable</code></td>
+                            <td>Warm, engaging voice</td>
+                        </tr>
+                        <tr>
+                            <td><code>onyx</code></td>
+                            <td>Deep, authoritative voice</td>
+                        </tr>
+                        <tr>
+                            <td><code>nova</code></td>
+                            <td>Bright, energetic voice</td>
+                        </tr>
+                        <tr>
+                            <td><code>shimmer</code></td>
+                            <td>Soft, melodic voice</td>
+                        </tr>
+                    </table>
+
+                    <div class="example-block">
+                        <h4>Example:</h4>
+                        <pre><code># Basic usage
+audio_data = ds.generate_audio_response("Hello, this is a test!")
+
+# With different voice
+audio_data = ds.generate_audio_response(
+    "This is a test with a different voice.",
+    voice="nova"
+)
+
+# Save to file
+ds.save_audio(audio_data, "response.mp3")</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section id="advanced-usage">
+                <h2><i class="fas fa-cogs"></i> Advanced Usage</h2>
+
+                <div id="error-handling">
+                    <h3>Error Handling</h3>
+                    <p>The client provides custom exceptions for better error handling:</p>
+                    <pre><code>from dynaspark import DynaSpark, DynaSparkError
+
+ds = DynaSpark()
+
+try:
+    response = ds.generate_response("Hello")
+    print(response.get('response', ''))
+except DynaSparkError as e:
+    print(f"API Error: {e}")
+except ValueError as e:
+    print(f"Invalid Parameter: {e}")
+except Exception as e:
+    print(f"Unexpected Error: {e}")</code></pre>
+
+                    <h4>Common Exceptions:</h4>
+                    <table class="parameter-table">
+                        <tr>
+                            <th>Exception</th>
+                            <th>Description</th>
+                        </tr>
+                        <tr>
+                            <td><code>DynaSparkError</code></td>
+                            <td>Base exception for API errors</td>
+                        </tr>
+                        <tr>
+                            <td><code>RateLimitError</code></td>
+                            <td>Raised when rate limit is exceeded</td>
+                        </tr>
+                        <tr>
+                            <td><code>AuthenticationError</code></td>
+                            <td>Raised for authentication issues</td>
+                        </tr>
+                        <tr>
+                            <td><code>ValidationError</code></td>
+                            <td>Raised for invalid parameters</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div id="rate-limiting">
+                    <h3>Rate Limiting</h3>
+                    <p>The API implements rate limiting to ensure fair usage. The client automatically handles rate limits and provides information about your current usage:</p>
+                    <pre><code># Get rate limit information
+rate_limit = ds.get_rate_limit()
+print(f"Remaining requests: {rate_limit.remaining}")
+print(f"Reset time: {rate_limit.reset_time}")</code></pre>
+                </div>
+
+                <div id="streaming">
+                    <h3>Streaming Responses</h3>
+                    <p>For long text generations, you can use streaming to get responses as they're generated:</p>
+                    <pre><code># Stream a response
+for chunk in ds.generate_response(
+    "Write a long story",
+    stream=True
+):
+    print(chunk, end='', flush=True)</code></pre>
+                </div>
+            </section>
+
+            <section id="examples">
+                <h2><i class="fas fa-lightbulb"></i> Examples</h2>
+
+                <div id="text-examples">
+                    <h3>Text Generation Examples</h3>
+                    <div class="example-block">
+                        <h4>Chat Completion:</h4>
+                        <pre><code>response = ds.generate_response(
+    "You are a helpful assistant. Explain quantum computing.",
+    model="mistral",
+    temperature=0.7
+)
+print(response['response'])</code></pre>
+                    </div>
+
+                    <div class="example-block">
+                        <h4>Code Generation:</h4>
+                        <pre><code>response = ds.generate_response(
+    "Write a Python function to sort a list of dictionaries by a key",
+    model="qwen-coder",
+    temperature=0.2
+)
+print(response['response'])</code></pre>
+                    </div>
+                </div>
+
+                <div id="image-examples">
+                    <h3>Image Generation Examples</h3>
+                    <div class="example-block">
+                        <h4>Basic Image:</h4>
+                        <pre><code>image_url = ds.generate_image(
+    "A cute cat playing with yarn",
+    model="flux"
+)
+print(f"Image URL: {image_url}")</code></pre>
+                    </div>
+
+                    <div class="example-block">
+                        <h4>High-Resolution Image:</h4>
+                        <pre><code>image_url = ds.generate_image(
+    "A detailed landscape of mountains at sunset",
+    width=1024,
+    height=768,
+    model="turbo"
+)
+print(f"Image URL: {image_url}")</code></pre>
+                    </div>
+                </div>
+
+                <div id="audio-examples">
+                    <h3>Audio Generation Examples</h3>
+                    <div class="example-block">
+                        <h4>Basic Audio:</h4>
+                        <pre><code>audio_data = ds.generate_audio_response(
+    "Welcome to DynaSpark! This is a test of the audio generation.",
+    voice="alloy"
+)
+ds.save_audio(audio_data, "welcome.mp3")</code></pre>
+                    </div>
+
+                    <div class="example-block">
+                        <h4>Multiple Voices:</h4>
+                        <pre><code># Generate audio with different voices
+voices = ["alloy", "echo", "nova"]
+for i, voice in enumerate(voices):
+    audio_data = ds.generate_audio_response(
+        f"This is voice {voice}",
+        voice=voice
+    )
+    ds.save_audio(audio_data, f"voice_{i}.mp3")</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section id="troubleshooting">
+                <h2><i class="fas fa-wrench"></i> Troubleshooting</h2>
+                
+                <h3>Common Issues</h3>
+                <div class="warning">
+                    <h4>Rate Limit Exceeded</h4>
+                    <p>If you see a rate limit error, wait for the reset time or reduce your request frequency.</p>
+                </div>
+
+                <div class="warning">
+                    <h4>Image Generation Fails</h4>
+                    <p>If image generation fails, check that your prompt is appropriate and within the allowed parameters.</p>
+                </div>
+
+                <div class="warning">
+                    <h4>Audio Generation Issues</h4>
+                    <p>If audio generation fails, ensure your text is not too long and contains valid characters.</p>
+                </div>
+            </section>
+
+            <section id="faq">
+                <h2><i class="fas fa-question-circle"></i> FAQ</h2>
+
+                <h3>Frequently Asked Questions</h3>
+                <div class="note">
+                    <h4>Do I need an API key?</h4>
+                    <p>No, currently no API key is required to use the API. You can start using it right away!</p>
+                </div>
+
+                <div class="note">
+                    <h4>What are the rate limits?</h4>
+                    <p>Free usage is limited to 100 requests per hour. Contact us for higher limits.</p>
+                </div>
+
+                <div class="note">
+                    <h4>Can I use this in production?</h4>
+                    <p>Yes, the API is stable and suitable for production use. However, consider getting a custom API key for higher rate limits.</p>
+                </div>
+            </section>
+
+            <footer class="footer">
+                <div class="social-links">
+                    <a href="https://github.com/Th3-AI/DynaSpark" target="_blank" class="social-link"><i class="fab fa-github"></i>GitHub</a>
+                    <a href="https://youtube.com/@Th3Coder" target="_blank" class="social-link"><i class="fab fa-youtube"></i>YouTube</a>
+                    <a href="https://instagram.com/th3_c0der" target="_blank" class="social-link"><i class="fab fa-instagram"></i>Instagram</a>
+                    <a href="https://www.linkedin.com/in/Th3-C0der" target="_blank" class="social-link"><i class="fab fa-linkedin"></i>LinkedIn</a>
+                    <a href="https://ko-fi.com/th3coder" target="_blank" class="social-link"><i class="fas fa-coffee"></i>Support on Ko-fi</a>
+                </div>
+                <p>Made with ❤️ by <a href="https://github.com/Th3-C0der">Th3-C0der</a></p>
+            </footer>
+        </div>
+    </main>
+</body>
+</html> 
