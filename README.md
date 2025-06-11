@@ -4,7 +4,7 @@
 
 [![API Status](https://img.shields.io/badge/API-Active-brightgreen)](https://dynaspark.onrender.com/status)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Version](https://img.shields.io/badge/Version-1.2.2.1-blue.svg)](https://github.com/Th3-AI/DynaSpark)
+[![Version](https://img.shields.io/badge/Version-1.0.0-blue.svg)](https://github.com/Th3-AI/DynaSpark)
 [![Python Client](https://img.shields.io/badge/Python_Client-Docs-blue)](https://github.com/Th3-AI/DynaSpark/blob/main/README-py.md)
 
 The official documentation for the DynaSpark API - Your free AI generation platform

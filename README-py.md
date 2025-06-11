@@ -1,31 +1,24 @@
 # 🐍 DynaSpark Python Client
 
-[![PyPI version](https://badge.fury.io/py/dynaspark.svg)](https://badge.fury.io/py/dynaspark)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![API Status](https://img.shields.io/website?url=https%3A%2F%2Fdynaspark.onrender.com%2Fstatus)](https://dynaspark.onrender.com/status)
-[![API Documentation](https://img.shields.io/badge/API_Docs-DynaSpark-blue)](https://github.com/Th3-AI/DynaSpark/blob/main/README.md)
-
-A powerful Python client for the DynaSpark API - Your free AI generation platform. Generate text, images, and audio with ease using Python!
-
 <div align="center">
 
-[API Documentation](https://github.com/Th3-AI/DynaSpark/blob/main/README.md) | [Try API](https://th3-ai.github.io/DynaSpark) | [Report Issues](https://github.com/Th3-AI/DynaSpark/issues) | [Try DynaSpark AI](https://DynaSpark.onrender.com)
+[![PyPI version](https://badge.fury.io/py/dynaspark.svg)](https://badge.fury.io/py/dynaspark)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![API Status](https://img.shields.io/badge/API-Active-brightgreen)](https://dynaspark.onrender.com/status)
+[![Version](https://img.shields.io/badge/Version-1.0.0-blue.svg)](https://github.com/Th3-AI/DynaSpark)
+[![API Documentation](https://img.shields.io/badge/API_Docs-DynaSpark-blue)](https://github.com/Th3-AI/DynaSpark/blob/main/README.md)
+
+The official Python client for the DynaSpark API - Your free AI generation platform
+
+[Try API](https://th3-ai.github.io/DynaSpark) | [Try DynaSpark AI](https://DynaSpark.onrender.com) | [Documentation](https://th3-ai.github.io/DynaSpark/python-docs.html) | [Report Issues](https://github.com/Th3-AI/DynaSpark/issues)
 
 </div>
 
-## ✨ Features
-
-- 🆓 **Free to Use**: No API key required for testing and development
-- 🚀 **Easy Integration**: Simple, intuitive Python interface
-- 🎯 **Multiple Models**: Support for various text, image, and audio models
-- 🔧 **Customizable**: Fine-tune generation parameters
-- 🛡️ **Error Handling**: Robust error handling and rate limit management
-- 📦 **Type Hints**: Full type support for better IDE integration
-
 ## 📋 Table of Contents
 
-- [Installation](#installation)
+- [Overview](#overview)
 - [Quick Start](#quick-start)
+- [Features](#features)
 - [API Reference](#api-reference)
   - [Client Initialization](#client-initialization)
   - [Text Generation](#text-generation)
@@ -36,9 +29,23 @@ A powerful Python client for the DynaSpark API - Your free AI generation platfor
 - [Rate Limits](#rate-limits)
 - [Contributing](#contributing)
 - [License](#license)
+- [Support](#support)
 - [API Documentation](#api-documentation)
 
-## 🚀 Installation
+## Overview
+
+The DynaSpark Python client provides a simple and intuitive interface to interact with the DynaSpark API. It offers a powerful way to generate text, images, and audio using various AI models, all through a clean Python interface.
+
+## Features
+
+- 🆓 **Free to Use**: No API key required for testing and development
+- 🚀 **Easy Integration**: Simple, intuitive Python interface
+- 🎯 **Multiple Models**: Support for various text, image, and audio models
+- 🔧 **Customizable**: Fine-tune generation parameters
+- 🛡️ **Error Handling**: Robust error handling and rate limit management
+- 📦 **Type Hints**: Full type support for better IDE integration
+
+## Quick Start
 
 Install the package using pip:
 
@@ -46,7 +53,7 @@ Install the package using pip:
 pip install dynaspark
 ```
 
-## ⚡ Quick Start
+Basic usage:
 
 ```python
 from dynaspark import DynaSpark
@@ -80,7 +87,7 @@ audio = client.generate_audio(
 audio.save("welcome.mp3")
 ```
 
-## 📚 API Reference
+## API Reference
 
 ### Client Initialization
 
@@ -164,7 +171,7 @@ Available voices:
 - `nova`: Bright, energetic voice
 - `shimmer`: Soft, melodic voice
 
-## 📝 Examples
+## Examples
 
 ### Text Generation Examples
 
@@ -225,7 +232,7 @@ for voice in ["alloy", "echo", "nova"]:
     audio.save(f"voice_{voice}.mp3")
 ```
 
-## ⚠️ Error Handling
+## Error Handling
 
 The client includes robust error handling:
 
@@ -246,7 +253,7 @@ Common error types:
 - `ValidationError`: Invalid parameters
 - `ServerError`: API server error
 
-## ⏱️ Rate Limits
+## Rate Limits
 
 The API implements rate limiting to ensure fair usage:
 
@@ -261,7 +268,7 @@ print(f"Remaining requests: {limits.remaining}")
 print(f"Reset time: {limits.reset_time}")
 ```
 
-## 🤝 Contributing
+## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request. For major changes, please open an issue first to discuss what you would like to change.
 
@@ -271,26 +278,20 @@ Contributions are welcome! Please feel free to submit a Pull Request. For major 
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
-## 📄 License
+## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🔗 Links
+## Support
 
-- [API Documentation](https://dynaspark.onrender.com/docs)
-- [GitHub Repository](https://github.com/Th3-AI/DynaSpark)
-- [PyPI Package](https://pypi.org/project/dynaspark)
+For API support, feature requests, or bug reports:
 
-## 👥 Social
+- GitHub Issues: [https://github.com/Th3-AI/DynaSpark/issues](https://github.com/Th3-AI/DynaSpark/issues)
+- Email: [dvp.ai.ml@gmail.com](mailto:dvp.ai.ml@gmail.com)
 
-- [YouTube](https://youtube.com/@Th3Coder)
-- [Instagram](https://instagram.com/th3_c0der)
-- [LinkedIn](https://www.linkedin.com/in/Th3-C0der)
-- [Support on Ko-fi](https://ko-fi.com/th3coder)
+## API Documentation
 
-## 🔗 API Documentation
-
-This Python client is built on top of the DynaSpark API. For detailed information about the API endpoints, parameters, and features, please refer to the main API documentation:
+For detailed information about the API endpoints, parameters, and features, please refer to the main API documentation:
 
 [![API Documentation](https://img.shields.io/badge/API_Docs-DynaSpark-blue)](https://github.com/Th3-AI/DynaSpark/blob/main/README.md)
 
@@ -306,4 +307,14 @@ The API documentation includes:
 
 ---
 
-Made with ❤️ by [Th3-C0der](https://github.com/Th3-C0der) 
+<div align="center">
+
+Made with ❤️ by [Th3-C0der](https://github.com/Th3-C0der)
+
+[![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Th3-C0der)
+[![YouTube](https://img.shields.io/badge/YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://youtube.com/@Th3Coder)
+[![Instagram](https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white)](https://instagram.com/th3_c0der)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/Th3-C0der)
+[![Ko-fi](https://img.shields.io/badge/Ko--fi-F16061?style=for-the-badge&logo=ko-fi&logoColor=white)](https://ko-fi.com/th3coder)
+
+</div> 
