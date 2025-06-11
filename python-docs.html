@@ -8,21 +8,37 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         :root {
+            /* Light theme (default) */
             --primary-color: #0073b7;
             --secondary-color: #005a94;
             --background-color: #f8fafc;
             --text-color: #1e293b;
             --border-color: #e2e8f0;
-            --code-bg: #f1f5f9;
+            --code-bg: #e2e8f0;  /* Darker background for code blocks */
             --card-bg: #ffffff;
             --hover-bg: #f1f5f9;
             --sidebar-width: 280px;
+            --shadow-color: rgba(0, 0, 0, 0.05);
+        }
+
+        [data-theme="dark"] {
+            --primary-color: #60a5fa;
+            --secondary-color: #93c5fd;
+            --background-color: #0f172a;
+            --text-color: #f1f5f9;
+            --border-color: #334155;
+            --code-bg: #1e293b;  /* Lighter background for code blocks in dark theme */
+            --card-bg: #1e293b;
+            --hover-bg: #334155;
+            --sidebar-width: 280px;
+            --shadow-color: rgba(0, 0, 0, 0.2);
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
         }
 
         body {
@@ -240,6 +256,7 @@
             border-radius: 8px;
             overflow-x: auto;
             margin: 1rem 0;
+            border: 1px solid var(--border-color);  /* Added border for better visibility */
         }
 
         pre code {
@@ -279,12 +296,24 @@
             border-radius: 0 8px 8px 0;
         }
 
+        [data-theme="dark"] .note {
+            background-color: #78350f;
+            border-left: 4px solid #d97706;
+            color: #fef3c7;
+        }
+
         .warning {
             background-color: #fee2e2;
             border-left: 4px solid #ef4444;
             padding: 1rem;
             margin: 1rem 0;
             border-radius: 0 8px 8px 0;
+        }
+
+        [data-theme="dark"] .warning {
+            background-color: #7f1d1d;
+            border-left: 4px solid #dc2626;
+            color: #fee2e2;
         }
 
         .footer {
@@ -333,6 +362,7 @@
             border-radius: 8px;
             margin: 1rem 0;
             font-family: monospace;
+            border: 1px solid var(--border-color);  /* Added border for better visibility */
         }
 
         .parameter-table {
@@ -536,9 +566,95 @@
                 transform: scale(0.98);
             }
         }
+
+        .code-block-wrapper {
+            position: relative;
+            margin: 1rem 0;
+        }
+
+        .copy-button {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            padding: 0.25rem 0.5rem;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+
+        .code-block-wrapper:hover .copy-button {
+            opacity: 1;
+        }
+
+        .copy-button:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .copy-button.copied {
+            background-color: #22c55e;
+        }
+
+        .copy-button i {
+            font-size: 0.9rem;
+        }
+
+        pre {
+            position: relative;
+            margin: 0;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            padding: 0.5rem;
+            border-radius: 50%;
+            width: 2.5rem;
+            height: 2.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 2px 4px var(--shadow-color);
+            z-index: 1000;
+        }
+
+        .theme-toggle:hover {
+            background-color: var(--hover-bg);
+            transform: translateY(-1px);
+        }
+
+        .theme-toggle i {
+            font-size: 1.25rem;
+        }
+
+        /* Additional touch-friendly styles */
+        @media (hover: none) {
+            .theme-toggle {
+                -webkit-tap-highlight-color: transparent;
+            }
+
+            .theme-toggle:active {
+                transform: scale(0.98);
+            }
+        }
     </style>
 </head>
 <body>
+    <button class="theme-toggle" onclick="toggleTheme()" title="Toggle dark mode">
+        <i class="fas fa-moon"></i>
+    </button>
     <button class="sidebar-toggle" onclick="toggleSidebar()">
         <i class="fas fa-bars"></i>
     </button>
@@ -595,8 +711,8 @@
             </header>
 
             <div class="nav-buttons">
-                <a href="docs.html" class="nav-button"><i class="fas fa-book"></i> API Documentation</a>
                 <a href="index.html" class="nav-button"><i class="fas fa-home"></i> Home</a>
+                <a href="docs.html" class="nav-button"><i class="fas fa-book"></i> API Documentation</a>
             </div>
 
             <section id="getting-started">
@@ -648,7 +764,7 @@ ds = DynaSpark(api_key="your_api_key")</code></pre>
                 <div id="client-initialization">
                     <h3>Client Initialization</h3>
                     <div class="method-signature">
-                        <code>DynaSpark(api_key: str = None, base_url: str = None)</code>
+                        <code>DynaSpark()</code>
                     </div>
                     <p>Initialize a new DynaSpark client instance.</p>
                     
@@ -665,12 +781,6 @@ ds = DynaSpark(api_key="your_api_key")</code></pre>
                             <td>str</td>
                             <td>Your API key (optional)</td>
                             <td>None</td>
-                        </tr>
-                        <tr>
-                            <td><code>base_url</code></td>
-                            <td>str</td>
-                            <td>Custom API base URL</td>
-                            <td>https://dynaspark.onrender.com/api</td>
                         </tr>
                     </table>
                 </div>
@@ -1087,11 +1197,100 @@ for i, voice in enumerate(voices):
     </main>
 
     <script>
+        // Theme management
+        function setTheme(theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+            localStorage.setItem('theme', theme);
+            const icon = document.querySelector('.theme-toggle i');
+            icon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+        }
+
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            setTheme(newTheme);
+        }
+
+        // Initialize theme
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        setTheme(savedTheme);
+
         // Add this at the end of your existing script
         function toggleSidebar() {
             const sidebar = document.querySelector('.sidebar');
             sidebar.classList.toggle('active');
         }
+
+        // Add copy button functionality
+        function addCopyButtons() {
+            // Add copy buttons to all pre elements
+            document.querySelectorAll('pre').forEach(pre => {
+                // Create wrapper if it doesn't exist
+                if (!pre.parentElement.classList.contains('code-block-wrapper')) {
+                    const wrapper = document.createElement('div');
+                    wrapper.className = 'code-block-wrapper';
+                    pre.parentNode.insertBefore(wrapper, pre);
+                    wrapper.appendChild(pre);
+                }
+
+                // Add copy button if it doesn't exist
+                if (!pre.parentElement.querySelector('.copy-button')) {
+                    const button = document.createElement('button');
+                    button.className = 'copy-button';
+                    button.innerHTML = '<i class="fas fa-copy"></i> Copy';
+                    button.addEventListener('click', async () => {
+                        const code = pre.querySelector('code')?.textContent || pre.textContent;
+                        try {
+                            await navigator.clipboard.writeText(code);
+                            button.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                            button.classList.add('copied');
+                            setTimeout(() => {
+                                button.innerHTML = '<i class="fas fa-copy"></i> Copy';
+                                button.classList.remove('copied');
+                            }, 2000);
+                        } catch (err) {
+                            console.error('Failed to copy:', err);
+                            button.innerHTML = '<i class="fas fa-times"></i> Failed';
+                            setTimeout(() => {
+                                button.innerHTML = '<i class="fas fa-copy"></i> Copy';
+                            }, 2000);
+                        }
+                    });
+                    pre.parentElement.appendChild(button);
+                }
+            });
+
+            // Add copy buttons to all endpoint elements
+            document.querySelectorAll('.endpoint').forEach(endpoint => {
+                if (!endpoint.querySelector('.copy-button')) {
+                    const button = document.createElement('button');
+                    button.className = 'copy-button';
+                    button.innerHTML = '<i class="fas fa-copy"></i> Copy URL';
+                    button.addEventListener('click', async () => {
+                        const url = endpoint.querySelector('.url')?.textContent || endpoint.textContent;
+                        try {
+                            await navigator.clipboard.writeText(url);
+                            button.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                            button.classList.add('copied');
+                            setTimeout(() => {
+                                button.innerHTML = '<i class="fas fa-copy"></i> Copy URL';
+                                button.classList.remove('copied');
+                            }, 2000);
+                        } catch (err) {
+                            console.error('Failed to copy:', err);
+                            button.innerHTML = '<i class="fas fa-times"></i> Failed';
+                            setTimeout(() => {
+                                button.innerHTML = '<i class="fas fa-copy"></i> Copy URL';
+                            }, 2000);
+                        }
+                    });
+                    endpoint.appendChild(button);
+                }
+            });
+        }
+
+        // Initialize copy buttons when the page loads
+        document.addEventListener('DOMContentLoaded', addCopyButtons);
 
         // Close sidebar when clicking outside on mobile
         document.addEventListener('click', function(event) {
