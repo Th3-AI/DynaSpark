@@ -8,14 +8,15 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         :root {
-            --primary-color: #2563eb;
-            --secondary-color: #1e40af;
+            --primary-color: #0073b7;
+            --secondary-color: #005a94;
             --background-color: #f8fafc;
             --text-color: #1e293b;
             --border-color: #e2e8f0;
             --code-bg: #f1f5f9;
             --card-bg: #ffffff;
             --hover-bg: #f1f5f9;
+            --sidebar-width: 280px;
         }
 
         * {
@@ -29,21 +30,38 @@
             line-height: 1.6;
             color: var(--text-color);
             background-color: var(--background-color);
+            display: flex;
+        }
+
+        .sidebar {
+            width: var(--sidebar-width);
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            background-color: var(--card-bg);
+            border-right: 1px solid var(--border-color);
             padding: 2rem 1rem;
+            overflow-y: auto;
+        }
+
+        .main-content {
+            margin-left: var(--sidebar-width);
+            padding: 2rem;
+            max-width: calc(100% - var(--sidebar-width));
+            flex: 1;
         }
 
         .container {
-            max-width: 1000px;
+            max-width: 900px;
             margin: 0 auto;
-            background-color: var(--card-bg);
-            border-radius: 16px;
-            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05);
-            padding: 2rem;
         }
 
         .header {
             text-align: center;
             margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border-color);
         }
 
         .header h1 {
@@ -57,6 +75,7 @@
             justify-content: center;
             gap: 1rem;
             margin-bottom: 1rem;
+            flex-wrap: wrap;
         }
 
         .badge {
@@ -65,7 +84,9 @@
             font-size: 0.9rem;
             font-weight: 500;
             text-decoration: none;
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
             transition: all 0.2s ease;
         }
 
@@ -84,16 +105,48 @@
             color: white;
         }
 
-        .toc {
-            background-color: var(--hover-bg);
-            padding: 1.5rem;
-            border-radius: 12px;
+        .badge.python {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
             margin-bottom: 2rem;
         }
 
+        .nav-button {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            background-color: var(--hover-bg);
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-button:hover {
+            background-color: var(--primary-color);
+            color: white;
+            transform: translateY(-1px);
+        }
+
+        .toc {
+            margin-top: 2rem;
+        }
+
         .toc h2 {
-            margin-bottom: 1rem;
             font-size: 1.25rem;
+            margin-bottom: 1rem;
+            color: var(--text-color);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
         .toc ul {
@@ -105,31 +158,54 @@
         }
 
         .toc a {
-            color: var(--primary-color);
+            color: var(--text-color);
             text-decoration: none;
-            transition: color 0.2s ease;
+            font-size: 0.95rem;
+            display: block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            transition: all 0.2s ease;
         }
 
         .toc a:hover {
-            color: var(--secondary-color);
-            text-decoration: underline;
+            background-color: var(--hover-bg);
+            color: var(--primary-color);
+        }
+
+        .toc .sub-section {
+            margin-left: 1rem;
+            padding-left: 0.5rem;
+            border-left: 2px solid var(--border-color);
         }
 
         section {
             margin-bottom: 3rem;
+            padding: 2rem;
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
         }
 
         section h2 {
             font-size: 1.75rem;
             margin-bottom: 1.5rem;
             color: var(--text-color);
-            border-bottom: 2px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
             padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--border-color);
         }
 
         section h3 {
             font-size: 1.5rem;
             margin: 2rem 0 1rem;
+            color: var(--text-color);
+        }
+
+        section h4 {
+            font-size: 1.25rem;
+            margin: 1.5rem 0 1rem;
             color: var(--text-color);
         }
 
@@ -190,6 +266,48 @@
             border-radius: 0 8px 8px 0;
         }
 
+        .warning {
+            background-color: #fee2e2;
+            border-left: 4px solid #ef4444;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .endpoint {
+            background-color: var(--code-bg);
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            font-family: monospace;
+        }
+
+        .method {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .url {
+            color: var(--text-color);
+        }
+
+        .parameter-table {
+            margin: 1rem 0;
+        }
+
+        .parameter-table th {
+            width: 25%;
+        }
+
+        .example-block {
+            margin: 1.5rem 0;
+        }
+
+        .example-block h4 {
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+
         .footer {
             text-align: center;
             margin-top: 3rem;
@@ -230,6 +348,17 @@
             transform: translateY(-1px);
         }
 
+        @media (max-width: 1024px) {
+            .sidebar {
+                display: none;
+            }
+
+            .main-content {
+                margin-left: 0;
+                max-width: 100%;
+            }
+        }
+
         @media (max-width: 768px) {
             .container {
                 padding: 1rem;
@@ -244,429 +373,552 @@
                 align-items: center;
             }
 
-            table {
-                display: block;
-                overflow-x: auto;
+            .nav-buttons {
+                flex-direction: column;
+            }
+
+            section {
+                padding: 1rem;
             }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header class="header">
-            <h1>DynaSpark API Documentation 🌟</h1>
-            <div class="badges">
-                <a href="https://dynaspark.onrender.com/status" target="_blank" class="badge active"><i class="fas fa-circle-check"></i> API Active</a>
-                <span class="badge license"><i class="fas fa-shield"></i> MIT License</span>
-            </div>
-            <p>The official documentation for the DynaSpark API - Your free AI generation platform</p>
-        </header>
-
-        <nav class="toc">
-            <h2>📋 Table of Contents</h2>
+    <nav class="sidebar">
+        <div class="toc">
+            <h2><i class="fas fa-list"></i> Table of Contents</h2>
             <ul>
-                <li><a href="#base-url">Base URL</a></li>
-                <li><a href="#authentication">Authentication</a></li>
-                <li><a href="#endpoints">Endpoints</a>
-                    <ul>
-                        <li><a href="#text-generation">Text Generation</a></li>
-                        <li><a href="#image-generation">Image Generation</a></li>
-                        <li><a href="#audio-response-generation">Audio Response Generation</a></li>
+                <li><a href="#getting-started">Getting Started</a>
+                    <ul class="sub-section">
+                        <li><a href="#overview">Overview</a></li>
+                        <li><a href="#authentication">Authentication</a></li>
+<li><a href="#base-url">Base URL</a></li>
                     </ul>
                 </li>
-                <li><a href="#response-formats">Response Formats</a></li>
-                <li><a href="#error-handling">Error Handling</a></li>
-                <li><a href="#rate-limits">Rate Limits</a></li>
-                <li><a href="#examples">Examples</a></li>
-            </ul>
-        </nav>
+                <li><a href="#endpoints">Endpoints</a>
+                    <ul class="sub-section">
+<li><a href="#text-generation">Text Generation</a></li>
+<li><a href="#image-generation">Image Generation</a></li>
+                        <li><a href="#audio-generation">Audio Generation</a></li>
+                    </ul>
+                </li>
+                <li><a href="#parameters">Parameters</a>
+                    <ul class="sub-section">
+                        <li><a href="#text-parameters">Text Parameters</a></li>
+                        <li><a href="#image-parameters">Image Parameters</a></li>
+                        <li><a href="#audio-parameters">Audio Parameters</a></li>
+</ul>
+</li>
+<li><a href="#response-formats">Response Formats</a></li>
+<li><a href="#error-handling">Error Handling</a></li>
+<li><a href="#rate-limits">Rate Limits</a></li>
+                <li><a href="#examples">Examples</a>
+                    <ul class="sub-section">
+                        <li><a href="#text-examples">Text Examples</a></li>
+                        <li><a href="#image-examples">Image Examples</a></li>
+                        <li><a href="#audio-examples">Audio Examples</a></li>
+                    </ul>
+                </li>
+                <li><a href="#troubleshooting">Troubleshooting</a></li>
+                <li><a href="#faq">FAQ</a></li>
+</ul>
+        </div>
+    </nav>
 
-        <main>
-            <section id="base-url">
-                <h2>🔗 Base URL</h2>
-                <pre><code>https://dynaspark.onrender.com/api</code></pre>
-            </section>
+    <main class="main-content">
+        <div class="container">
+            <header class="header">
+                <h1>🚀 DynaSpark API</h1>
+                <div class="badges">
+                    <a href="https://dynaspark.onrender.com/status" target="_blank" class="badge active">
+                        <i class="fas fa-circle-check"></i> API Active
+                    </a>
+                    <span class="badge license"><i class="fas fa-shield"></i> MIT License</span>
+                   
+                </div>
+                <p>A powerful, free API for text, image, and audio generation - No API key required! 🆓</p>
+            </header>
 
-            <section id="authentication">
-                <h2>🔐 Authentication</h2>
-                <p>The API uses a simple API key authentication system. Include your API key in the request parameters:</p>
-                <pre><code>?api_key=YOUR_API_KEY</code></pre>
-                <div class="note">
-                    <strong>Note:</strong> Currently, no API key is required for testing and development. You can use the API without authentication.
+            <div class="nav-buttons">
+                <a href="python-docs.html" class="nav-button"><i class="fab fa-python"></i> Python Documentation</a>
+                <a href="index.html" class="nav-button"><i class="fas fa-home"></i> Home</a>
+            </div>
+
+            <section id="getting-started">
+                <h2><i class="fas fa-rocket"></i> Getting Started</h2>
+
+                <div id="overview">
+                    <h3>Overview</h3>
+                    <p>The DynaSpark API provides powerful AI capabilities for text generation, image creation, and audio synthesis. It's designed to be easy to use while offering advanced features for developers.</p>
+                    <div class="note">
+                        <strong>Note:</strong> Currently, no API key is required for testing and development. You can use the API without authentication.
+                    </div>
+                </div>
+
+                <div id="authentication">
+                    <h3>Authentication</h3>
+                    <p>While authentication is optional, you can include an API key in your requests:</p>
+                    <pre><code>curl -X POST "https://dynaspark.onrender.com/api/generate" \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"prompt": "Hello, world!"}'</code></pre>
+                </div>
+
+                <div id="base-url">
+                    <h3>Base URL</h3>
+                    <p>All API endpoints are relative to the base URL:</p>
+                    <pre><code>https://dynaspark.onrender.com/api</code></pre>
                 </div>
             </section>
 
             <section id="endpoints">
-                <h2>📡 Endpoints</h2>
+                <h2><i class="fas fa-code"></i> Endpoints</h2>
 
-                <section id="text-generation">
+                <div id="text-generation">
                     <h3>Text Generation</h3>
-                    <p>Generate text responses using various models and parameters.</p>
-                    <p><strong>Endpoint:</strong> <code>/generate_response</code></p>
-                    <p><strong>Method:</strong> <code>GET</code></p>
+                    <div class="endpoint">
+                        <span class="method">POST</span> <span class="url">/generate</span>
+                    </div>
+<p>Generate text responses using various models and parameters.</p>
 
-                    <h4>Parameters:</h4>
-                    <table>
-                        <tr>
-                            <th>Parameter</th>
-                            <th>Type</th>
-                            <th>Description</th>
-                            <th>Default</th>
-                        </tr>
-                        <tr>
-                            <td><code>user_input</code></td>
-                            <td>string</td>
-                            <td>The input text to generate a response for</td>
-                            <td>Required</td>
-                        </tr>
-                        <tr>
-                            <td><code>api_key</code></td>
-                            <td>string</td>
-                            <td>Your API key</td>
-                            <td>Required</td>
-                        </tr>
-                        <tr>
-                            <td><code>model</code></td>
-                            <td>string</td>
-                            <td>Model to use for generation</td>
-                            <td>None</td>
-                        </tr>
-                        <tr>
-                            <td><code>temperature</code></td>
-                            <td>float</td>
-                            <td>Controls randomness (0.0-3.0)</td>
-                            <td>None</td>
-                        </tr>
-                        <tr>
-                            <td><code>top_p</code></td>
-                            <td>float</td>
-                            <td>Controls diversity (0.0-1.0)</td>
-                            <td>None</td>
-                        </tr>
-                        <tr>
-                            <td><code>presence_penalty</code></td>
-                            <td>float</td>
-                            <td>Penalizes repeated tokens (-2.0-2.0)</td>
-                            <td>None</td>
-                        </tr>
-                        <tr>
-                            <td><code>frequency_penalty</code></td>
-                            <td>float</td>
-                            <td>Penalizes frequent tokens (-2.0-2.0)</td>
-                            <td>None</td>
-                        </tr>
-                        <tr>
-                            <td><code>json</code></td>
-                            <td>boolean</td>
-                            <td>Return JSON response</td>
-                            <td>false</td>
-                        </tr>
-                        <tr>
-                            <td><code>system</code></td>
-                            <td>string</td>
-                            <td>Custom system prompt</td>
-                            <td>None</td>
-                        </tr>
-                        <tr>
-                            <td><code>stream</code></td>
-                            <td>boolean</td>
-                            <td>Stream the response</td>
-                            <td>false</td>
-                        </tr>
-                        <tr>
-                            <td><code>private</code></td>
-                            <td>boolean</td>
-                            <td>Keep generation private</td>
-                            <td>false</td>
-                        </tr>
-                        <tr>
-                            <td><code>seed</code></td>
-                            <td>integer</td>
-                            <td>Random seed for reproducibility</td>
-                            <td>None</td>
-                        </tr>
-                        <tr>
-                            <td><code>referrer</code></td>
-                            <td>string</td>
-                            <td>Referrer information</td>
-                            <td>None</td>
-                        </tr>
-                        <tr>
-                            <td><code>voice</code></td>
-                            <td>string</td>
-                            <td>Voice for audio response</td>
-                            <td>None</td>
-                        </tr>
-                    </table>
+                    <h4>Request Body:</h4>
+                    <table class="parameter-table">
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+<tr>
+                            <td><code>prompt</code></td>
+<td>string</td>
+<td>The input text to generate a response for</td>
+<td>Required</td>
+</tr>
+<tr>
+<td><code>model</code></td>
+<td>string</td>
+<td>Model to use for generation</td>
+<td>None</td>
+</tr>
+<tr>
+<td><code>temperature</code></td>
+<td>float</td>
+<td>Controls randomness (0.0-3.0)</td>
+                            <td>0.8</td>
+</tr>
+<tr>
+<td><code>top_p</code></td>
+<td>float</td>
+<td>Controls diversity (0.0-1.0)</td>
+                            <td>0.9</td>
+</tr>
+<tr>
+<td><code>presence_penalty</code></td>
+<td>float</td>
+<td>Penalizes repeated tokens (-2.0-2.0)</td>
+                            <td>0.0</td>
+</tr>
+<tr>
+<td><code>frequency_penalty</code></td>
+<td>float</td>
+<td>Penalizes frequent tokens (-2.0-2.0)</td>
+                            <td>0.0</td>
+</tr>
+</table>
 
-                    <h4>Example Request:</h4>
-                    <pre><code>curl "https://dynaspark.onrender.com/api/generate_response?user_input=What%20is%20AI%3F&api_key=YOUR_API_KEY&temperature=0.8"</code></pre>
+                    <div class="example-block">
+                        <h4>Example Request:</h4>
+                        <pre><code>curl -X POST "https://dynaspark.onrender.com/api/generate" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "prompt": "What is artificial intelligence?",
+    "model": "mistral",
+    "temperature": 0.8,
+    "top_p": 0.9
+  }'</code></pre>
+                    </div>
+                </div>
 
-                    <h4>Example Response:</h4>
-                    <pre><code>{
-    "response": "Artificial Intelligence (AI) is a branch of computer science...",
-    "model": "default",
-    "usage": {
-        "prompt_tokens": 4,
-        "completion_tokens": 150,
-        "total_tokens": 154
-    }
-}</code></pre>
-                </section>
-
-                <section id="image-generation">
+                <div id="image-generation">
                     <h3>Image Generation</h3>
-                    <p>Generate images from text descriptions.</p>
-                    <p><strong>Endpoint:</strong> <code>/generate_image</code></p>
-                    <p><strong>Method:</strong> <code>GET</code></p>
+                    <div class="endpoint">
+                        <span class="method">POST</span> <span class="url">/generate-image</span>
+                    </div>
+<p>Generate images from text descriptions.</p>
 
-                    <h4>Parameters:</h4>
-                    <table>
-                        <tr>
-                            <th>Parameter</th>
-                            <th>Type</th>
-                            <th>Description</th>
-                            <th>Default</th>
-                        </tr>
-                        <tr>
-                            <td><code>user_input</code></td>
-                            <td>string</td>
-                            <td>The prompt to generate an image for</td>
-                            <td>Required</td>
-                        </tr>
-                        <tr>
-                            <td><code>api_key</code></td>
-                            <td>string</td>
-                            <td>Your API key</td>
-                            <td>Required</td>
-                        </tr>
-                        <tr>
-                            <td><code>width</code></td>
-                            <td>integer</td>
-                            <td>Image width (64-2048)</td>
-                            <td>768</td>
-                        </tr>
-                        <tr>
-                            <td><code>height</code></td>
-                            <td>integer</td>
-                            <td>Image height (64-2048)</td>
-                            <td>768</td>
-                        </tr>
-                        <tr>
-                            <td><code>model</code></td>
-                            <td>string</td>
-                            <td>Model to use (flux/turbo/gptimage)</td>
-                            <td>None</td>
-                        </tr>
-                        <tr>
-                            <td><code>nologo</code></td>
-                            <td>boolean</td>
-                            <td>Exclude watermark</td>
-                            <td>false</td>
-                        </tr>
-                        <tr>
-                            <td><code>seed</code></td>
-                            <td>integer</td>
-                            <td>Random seed</td>
-                            <td>None</td>
-                        </tr>
-                        <tr>
-                            <td><code>wm</code></td>
-                            <td>string</td>
-                            <td>Custom watermark</td>
-                            <td>None</td>
-                        </tr>
-                    </table>
+                    <h4>Request Body:</h4>
+                    <table class="parameter-table">
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+<tr>
+                            <td><code>prompt</code></td>
+<td>string</td>
+<td>The prompt to generate an image for</td>
+<td>Required</td>
+</tr>
+<tr>
+<td><code>width</code></td>
+<td>integer</td>
+<td>Image width (64-2048)</td>
+<td>768</td>
+</tr>
+<tr>
+<td><code>height</code></td>
+<td>integer</td>
+<td>Image height (64-2048)</td>
+<td>768</td>
+</tr>
+<tr>
+<td><code>model</code></td>
+<td>string</td>
+<td>Model to use (flux/turbo/gptimage)</td>
+                            <td>flux</td>
+</tr>
+<tr>
+<td><code>nologo</code></td>
+<td>boolean</td>
+<td>Exclude watermark</td>
+<td>false</td>
+</tr>
+<tr>
+<td><code>wm</code></td>
+<td>string</td>
+                            <td>Custom watermark text</td>
+                            <td>null</td>
+</tr>
+</table>
 
-                    <h4>Example Request:</h4>
-                    <pre><code>curl "https://dynaspark.onrender.com/api/generate_image?user_input=A%20beautiful%20sunset&api_key=YOUR_API_KEY&width=1024&height=768"</code></pre>
-
-                    <h4>Example Response:</h4>
-                    <pre><code>{
-    "image_url": "https://dynaspark.onrender.com/generated/image_123456.png",
+                    <div class="example-block">
+                        <h4>Example Request:</h4>
+                        <pre><code>curl -X POST "https://dynaspark.onrender.com/api/generate-image" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "prompt": "A serene mountain landscape",
+    "width": 1024,
+    "height": 768,
     "model": "flux",
-    "seed": 12345
-}</code></pre>
-                </section>
+    "nologo": true
+  }'</code></pre>
+                    </div>
+                </div>
 
-                <section id="audio-response-generation">
-                    <h3>Audio Response Generation</h3>
-                    <p>Generate audio responses using text generation with audio output.</p>
-                    <p><strong>Endpoint:</strong> <code>/generate_response</code></p>
-                    <p><strong>Method:</strong> <code>GET</code></p>
+                <div id="audio-generation">
+                    <h3>Audio Generation</h3>
+                    <div class="endpoint">
+                        <span class="method">POST</span> <span class="url">/generate-audio</span>
+                    </div>
+                    <p>Generate audio responses from text using various voices.</p>
 
-                    <h4>Parameters:</h4>
-                    <table>
-                        <tr>
-                            <th>Parameter</th>
-                            <th>Type</th>
-                            <th>Description</th>
-                            <th>Default</th>
-                        </tr>
-                        <tr>
-                            <td><code>user_input</code></td>
-                            <td>string</td>
-                            <td>The input text to generate a response for</td>
-                            <td>Required</td>
-                        </tr>
-                        <tr>
-                            <td><code>api_key</code></td>
-                            <td>string</td>
-                            <td>Your API key</td>
-                            <td>Required</td>
-                        </tr>
-                        <tr>
-                            <td><code>model</code></td>
-                            <td>string</td>
-                            <td>Must be "openai-audio"</td>
-                            <td>Required</td>
-                        </tr>
-                        <tr>
-                            <td><code>voice</code></td>
-                            <td>string</td>
-                            <td>Voice to use</td>
-                            <td>"alloy"</td>
-                        </tr>
-                    </table>
+                    <h4>Request Body:</h4>
+                    <table class="parameter-table">
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+<tr>
+                            <td><code>text</code></td>
+<td>string</td>
+                            <td>The text to convert to speech</td>
+<td>Required</td>
+</tr>
+<tr>
+<td><code>voice</code></td>
+<td>string</td>
+<td>Voice to use</td>
+                            <td>alloy</td>
+</tr>
+</table>
 
                     <h4>Available Voices:</h4>
-                    <table>
-                        <tr>
-                            <th>Voice</th>
-                            <th>Description</th>
-                        </tr>
-                        <tr>
-                            <td><code>alloy</code></td>
-                            <td>Balanced, natural-sounding voice (default)</td>
-                        </tr>
-                        <tr>
-                            <td><code>echo</code></td>
-                            <td>Clear, professional voice</td>
-                        </tr>
-                        <tr>
-                            <td><code>fable</code></td>
-                            <td>Warm, engaging voice</td>
-                        </tr>
-                        <tr>
-                            <td><code>onyx</code></td>
-                            <td>Deep, authoritative voice</td>
-                        </tr>
-                        <tr>
-                            <td><code>nova</code></td>
-                            <td>Bright, energetic voice</td>
-                        </tr>
-                        <tr>
-                            <td><code>shimmer</code></td>
-                            <td>Soft, melodic voice</td>
-                        </tr>
+                    <table class="parameter-table">
+<tr>
+<th>Voice</th>
+<th>Description</th>
+</tr>
+<tr>
+<td><code>alloy</code></td>
+<td>Balanced, natural-sounding voice (default)</td>
+</tr>
+<tr>
+<td><code>echo</code></td>
+<td>Clear, professional voice</td>
+</tr>
+<tr>
+<td><code>fable</code></td>
+<td>Warm, engaging voice</td>
+</tr>
+<tr>
+<td><code>onyx</code></td>
+<td>Deep, authoritative voice</td>
+</tr>
+<tr>
+<td><code>nova</code></td>
+<td>Bright, energetic voice</td>
+</tr>
+<tr>
+<td><code>shimmer</code></td>
+<td>Soft, melodic voice</td>
+</tr>
                     </table>
 
-                    <h4>Example Request:</h4>
-                    <pre><code>curl "https://dynaspark.onrender.com/api/generate_response?user_input=Hello%20world&api_key=YOUR_API_KEY&model=openai-audio&voice=nova" \
-     --output response.mp3</code></pre>
-
-                    <h4>Response:</h4>
-                    <ul>
-                        <li>Binary audio data (MP3 format)</li>
-                        <li>Content-Type: audio/mpeg</li>
-                    </ul>
-                </section>
+                    <div class="example-block">
+                        <h4>Example Request:</h4>
+                        <pre><code>curl -X POST "https://dynaspark.onrender.com/api/generate-audio" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "text": "Hello, this is a test!",
+    "voice": "nova"
+  }'</code></pre>
+                    </div>
+                </div>
             </section>
 
             <section id="response-formats">
-                <h2>📦 Response Formats</h2>
+                <h2><i class="fas fa-file-code"></i> Response Formats</h2>
 
-                <h3>Text Generation</h3>
-                <ul>
-                    <li>Default: JSON object with <code>response</code> field</li>
-                    <li>With <code>json=true</code>: Full JSON response with metadata</li>
-                    <li>With <code>stream=true</code>: Server-sent events stream</li>
-                </ul>
+                <h3>Text Generation Response</h3>
+                <pre><code>{
+  "response": "Generated text response...",
+  "model": "model_name",
+  "usage": {
+    "prompt_tokens": 10,
+    "completion_tokens": 50,
+    "total_tokens": 60
+  }
+}</code></pre>
 
-                <h3>Image Generation</h3>
-                <ul>
-                    <li>JSON object with <code>image_url</code> field</li>
-                    <li>Image URL is valid for 24 hours</li>
-                </ul>
+                <h3>Image Generation Response</h3>
+                <pre><code>{
+  "url": "https://example.com/generated-image.jpg",
+  "model": "model_name",
+  "width": 1024,
+  "height": 768
+}</code></pre>
 
-                <h3>Audio Response</h3>
-                <ul>
-                    <li>Binary MP3 data</li>
-                    <li>Content-Type: audio/mpeg</li>
-                </ul>
+                <h3>Audio Generation Response</h3>
+                <pre><code>{
+  "audio": "base64_encoded_audio_data",
+  "format": "mp3",
+  "duration": 5.2
+}</code></pre>
             </section>
 
             <section id="error-handling">
-                <h2>⚠️ Error Handling</h2>
-                <p>The API uses standard HTTP status codes and returns error messages in JSON format:</p>
-                <pre><code>{
-    "error": "Error message description"
-}</code></pre>
+                <h2><i class="fas fa-exclamation-triangle"></i> Error Handling</h2>
 
-                <h3>Common Error Codes:</h3>
-                <ul>
-                    <li><code>400</code>: Bad Request (invalid parameters)</li>
-                    <li><code>401</code>: Unauthorized (invalid API key)</li>
-                    <li><code>429</code>: Too Many Requests (rate limit exceeded)</li>
-                    <li><code>500</code>: Internal Server Error</li>
-                </ul>
+                <p>The API uses standard HTTP status codes and returns error details in the response body:</p>
+
+                <table class="parameter-table">
+                    <tr>
+                        <th>Status Code</th>
+                        <th>Description</th>
+                    </tr>
+                    <tr>
+                        <td><code>400</code></td>
+                        <td>Bad Request - Invalid parameters</td>
+                    </tr>
+                    <tr>
+                        <td><code>401</code></td>
+                        <td>Unauthorized - Invalid API key</td>
+                    </tr>
+                    <tr>
+                        <td><code>429</code></td>
+                        <td>Too Many Requests - Rate limit exceeded</td>
+                    </tr>
+                    <tr>
+                        <td><code>500</code></td>
+                        <td>Internal Server Error</td>
+                    </tr>
+</table>
+
+                <div class="example-block">
+                    <h4>Error Response Example:</h4>
+                    <pre><code>{
+  "error": {
+    "code": "rate_limit_exceeded",
+    "message": "Rate limit exceeded. Try again in 60 seconds.",
+    "details": {
+      "reset_time": "2024-01-01T00:01:00Z"
+    }
+  }
+}</code></pre>
+                </div>
             </section>
 
             <section id="rate-limits">
-                <h2>🚦 Rate Limits</h2>
-                <ul>
-                    <li>Free API Key: 100 requests per hour</li>
-                    <li>Custom API Keys: Contact for limits</li>
-                </ul>
+                <h2><i class="fas fa-clock"></i> Rate Limits</h2>
 
-                <p>Rate limit headers are included in responses:</p>
-                <pre><code>X-RateLimit-Limit: 100
-X-RateLimit-Remaining: 95
-X-RateLimit-Reset: 1625097600</code></pre>
+                <p>The API implements rate limiting to ensure fair usage:</p>
+
+                <div class="note">
+                    <h4>Free Tier Limits</h4>
+                    <ul>
+                        <li>100 requests per hour</li>
+                        <li>Maximum 10 concurrent requests</li>
+                        <li>Rate limit headers included in responses</li>
+</ul>
+                </div>
+
+                <h3>Rate Limit Headers</h3>
+                <table class="parameter-table">
+                    <tr>
+                        <th>Header</th>
+                        <th>Description</th>
+                    </tr>
+                    <tr>
+                        <td><code>X-RateLimit-Limit</code></td>
+                        <td>Total requests allowed per hour</td>
+                    </tr>
+                    <tr>
+                        <td><code>X-RateLimit-Remaining</code></td>
+                        <td>Remaining requests in current hour</td>
+                    </tr>
+                    <tr>
+                        <td><code>X-RateLimit-Reset</code></td>
+                        <td>Time when rate limit resets (Unix timestamp)</td>
+                    </tr>
+                </table>
             </section>
 
             <section id="examples">
-                <h2>📝 Examples</h2>
+                <h2><i class="fas fa-lightbulb"></i> Examples</h2>
 
-                <h3>Text Generation with Parameters</h3>
-                <pre><code>curl "https://dynaspark.onrender.com/api/generate_response?user_input=Write%20a%20poem&api_key=YOUR_API_KEY&temperature=0.8&top_p=0.9&presence_penalty=0.6&frequency_penalty=0.6"</code></pre>
+                <div id="text-examples">
+                    <h3>Text Generation Examples</h3>
+                    <div class="example-block">
+                        <h4>Basic Text Generation:</h4>
+                        <pre><code>curl -X POST "https://dynaspark.onrender.com/api/generate" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "prompt": "Explain quantum computing in simple terms",
+    "model": "mistral",
+    "temperature": 0.7
+  }'</code></pre>
+                    </div>
 
-                <h3>Image Generation with Custom Size</h3>
-                <pre><code>curl "https://dynaspark.onrender.com/api/generate_image?user_input=A%20futuristic%20city&api_key=YOUR_API_KEY&width=1024&height=768&model=flux&nologo=true"</code></pre>
+                    <div class="example-block">
+                        <h4>Code Generation:</h4>
+                        <pre><code>curl -X POST "https://dynaspark.onrender.com/api/generate" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "prompt": "Write a Python function to sort a list of dictionaries by a key",
+    "model": "qwen-coder",
+    "temperature": 0.2
+  }'</code></pre>
+                    </div>
+                </div>
 
-                <h3>Audio Response with Different Voice</h3>
-                <pre><code>curl "https://dynaspark.onrender.com/api/generate_response?user_input=Hello%20world&api_key=YOUR_API_KEY&model=openai-audio&voice=nova" \
-     --output response.mp3</code></pre>
+                <div id="image-examples">
+                    <h3>Image Generation Examples</h3>
+                    <div class="example-block">
+                        <h4>Basic Image:</h4>
+                        <pre><code>curl -X POST "https://dynaspark.onrender.com/api/generate-image" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "prompt": "A cute cat playing with yarn",
+    "model": "flux"
+  }'</code></pre>
+                    </div>
 
-                <h3>JSON Response</h3>
-                <pre><code>curl "https://dynaspark.onrender.com/api/generate_response?user_input=List%203%20colors&api_key=YOUR_API_KEY&json=true"</code></pre>
+                    <div class="example-block">
+                        <h4>High-Resolution Image:</h4>
+                        <pre><code>curl -X POST "https://dynaspark.onrender.com/api/generate-image" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "prompt": "A detailed landscape of mountains at sunset",
+    "width": 1024,
+    "height": 768,
+    "model": "turbo",
+    "nologo": true
+  }'</code></pre>
+                    </div>
+                </div>
+
+                <div id="audio-examples">
+                    <h3>Audio Generation Examples</h3>
+                    <div class="example-block">
+                        <h4>Basic Audio:</h4>
+                        <pre><code>curl -X POST "https://dynaspark.onrender.com/api/generate-audio" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "text": "Welcome to DynaSpark! This is a test of the audio generation.",
+    "voice": "alloy"
+  }'</code></pre>
+                    </div>
+
+                    <div class="example-block">
+                        <h4>Multiple Voices:</h4>
+                        <pre><code># Generate audio with different voices
+for voice in "alloy" "echo" "nova"; do
+  curl -X POST "https://dynaspark.onrender.com/api/generate-audio" \
+    -H "Content-Type: application/json" \
+    -d "{
+      \"text\": \"This is voice $voice\",
+      \"voice\": \"$voice\"
+    }" > "voice_${voice}.mp3"
+done</code></pre>
+                    </div>
+                </div>
             </section>
 
-            <section id="api-status">
-                <h2>🔄 API Status</h2>
-                <p>Check the API status at: <a href="https://dynaspark.onrender.com/status" target="_blank">https://dynaspark.onrender.com/status</a></p>
+            <section id="troubleshooting">
+                <h2><i class="fas fa-wrench"></i> Troubleshooting</h2>
+                
+                <h3>Common Issues</h3>
+                <div class="warning">
+                    <h4>Rate Limit Exceeded</h4>
+                    <p>If you see a rate limit error, wait for the reset time or reduce your request frequency.</p>
+                </div>
+
+                <div class="warning">
+                    <h4>Image Generation Fails</h4>
+                    <p>If image generation fails, check that your prompt is appropriate and within the allowed parameters.</p>
+                </div>
+
+                <div class="warning">
+                    <h4>Audio Generation Issues</h4>
+                    <p>If audio generation fails, ensure your text is not too long and contains valid characters.</p>
+                </div>
             </section>
 
-            <section id="support">
-                <h2>📞 Support</h2>
-                <p>For API support, feature requests, or bug reports:</p>
-                <ul>
-                    <li>GitHub Issues: <a href="https://github.com/Th3-AI/DynaSpark/issues" target="_blank">https://github.com/Th3-AI/DynaSpark/issues</a></li>
-                    <li>Email: <a href="mailto:dvp.ai.ml@gmail.com">dvp.ai.ml@gmail.com</a></li>
-                </ul>
-            </section>
-        </main>
+            <section id="faq">
+                <h2><i class="fas fa-question-circle"></i> FAQ</h2>
 
-        <footer class="footer">
-            <div class="social-links">
-                <a href="https://github.com/Th3-AI/DynaSpark" target="_blank" class="social-link"><i class="fab fa-github"></i>GitHub</a>
-                <a href="https://youtube.com/@Th3Coder" target="_blank" class="social-link"><i class="fab fa-youtube"></i>YouTube</a>
-                <a href="https://instagram.com/th3_c0der" target="_blank" class="social-link"><i class="fab fa-instagram"></i>Instagram</a>
-                <a href="https://www.linkedin.com/in/Th3-C0der" target="_blank" class="social-link"><i class="fab fa-linkedin"></i>LinkedIn</a>
-                <a href="https://ko-fi.com/th3coder" target="_blank" class="social-link"><i class="fas fa-coffee"></i>Support on Ko-fi</a>
-            </div>
-            <p>Made with ❤️ by <a href="https://github.com/Th3-C0der">Th3-C0der</a></p>
-        </footer>
-    </div>
+                <h3>Frequently Asked Questions</h3>
+                <div class="note">
+                    <h4>Do I need an API key?</h4>
+                    <p>No, currently no API key is required to use the API. You can start using it right away!</p>
+                </div>
+
+                <div class="note">
+                    <h4>What are the rate limits?</h4>
+                    <p>Free usage is limited to 100 requests per hour. Contact us for higher limits.</p>
+                </div>
+
+                <div class="note">
+                    <h4>Can I use this in production?</h4>
+                    <p>Yes, the API is stable and suitable for production use. However, consider getting a custom API key for higher rate limits.</p>
+                </div>
+            </section>
+
+            <footer class="footer">
+                <div class="social-links">
+                    <a href="https://github.com/Th3-AI/DynaSpark" target="_blank" class="social-link"><i class="fab fa-github"></i>GitHub</a>
+                    <a href="https://youtube.com/@Th3Coder" target="_blank" class="social-link"><i class="fab fa-youtube"></i>YouTube</a>
+                    <a href="https://instagram.com/th3_c0der" target="_blank" class="social-link"><i class="fab fa-instagram"></i>Instagram</a>
+                    <a href="https://www.linkedin.com/in/Th3-C0der" target="_blank" class="social-link"><i class="fab fa-linkedin"></i>LinkedIn</a>
+                    <a href="https://ko-fi.com/th3coder" target="_blank" class="social-link"><i class="fas fa-coffee"></i>Support on Ko-fi</a>
+                </div>
+                <p>Made with ❤️ by <a href="https://github.com/Th3-C0der">Th3-C0der</a></p>
+            </footer>
+</div> 
+    </main>
 </body>
 </html> 
