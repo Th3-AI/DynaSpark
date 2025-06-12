@@ -62,7 +62,7 @@ from dynaspark import DynaSpark
 client = DynaSpark()
 
 # Generate text
-response = client.generate_text(
+response = client.generate_response(
     prompt="Explain quantum computing in simple terms",
     model="mistral",
     temperature=0.7
@@ -99,68 +99,60 @@ client = DynaSpark()
 
 # With custom API key (optional)
 client = DynaSpark(api_key="your_api_key")
-
-# With custom base URL
-client = DynaSpark(base_url="https://custom-url.com/api")
 ```
 
 ### Text Generation
 
 ```python
-response = client.generate_text(
+response = client.generate_response(
     prompt="Your prompt here",
     model="mistral",  # Optional: model to use
     temperature=0.8,  # Optional: controls randomness (0.0-3.0)
     top_p=0.9,       # Optional: controls diversity (0.0-1.0)
     presence_penalty=0.0,  # Optional: penalizes repeated tokens (-2.0-2.0)
-    frequency_penalty=0.0  # Optional: penalizes frequent tokens (-2.0-2.0)
+    frequency_penalty=0.0,  # Optional: penalizes frequent tokens (-2.0-2.0)
+    system=None,     # Optional: custom system prompt
+    referrer=None,   # Optional: referrer information
+    stream=False,    # Optional: stream the response
+    private=False,   # Optional: keep generation private
+    seed=None,       # Optional: random seed for reproducibility
+    json=False       # Optional: return response in JSON format
 )
 
 # Access the generated text
-print(response.text)
+print(response.get('response', ''))
 
 # Access metadata
-print(f"Model used: {response.model}")
-print(f"Token usage: {response.usage}")
+print(f"Model used: {response.get('model')}")
+print(f"Usage: {response.get('usage')}")
 ```
 
 ### Image Generation
 
 ```python
-image = client.generate_image(
+image_url = client.generate_image(
     prompt="Your image description",
     width=768,        # Optional: image width (64-2048)
     height=768,       # Optional: image height (64-2048)
     model="flux",     # Optional: model to use (flux/turbo/gptimage)
     nologo=False,     # Optional: exclude watermark
-    watermark=None    # Optional: custom watermark text
+    wm=None          # Optional: custom watermark text
 )
 
-# Save the image
-image.save("output.png")
-
 # Get image URL
-print(f"Image URL: {image.url}")
-
-# Get image metadata
-print(f"Dimensions: {image.width}x{image.height}")
-print(f"Model used: {image.model}")
+print(f"Image URL: {image_url}")
 ```
 
 ### Audio Generation
 
 ```python
-audio = client.generate_audio(
+audio_data = client.generate_audio_response(
     text="Text to convert to speech",
     voice="alloy"  # Optional: voice to use
 )
 
 # Save the audio
-audio.save("output.mp3")
-
-# Get audio metadata
-print(f"Duration: {audio.duration} seconds")
-print(f"Format: {audio.format}")
+client.save_audio(audio_data, "output.mp3")
 ```
 
 Available voices:
@@ -177,21 +169,36 @@ Available voices:
 
 ```python
 # Basic text generation
-response = client.generate_text("What is artificial intelligence?")
+response = client.generate_response("What is artificial intelligence?")
 
 # Code generation with specific model
-response = client.generate_text(
+response = client.generate_response(
     prompt="Write a Python function to sort a list of dictionaries by a key",
     model="qwen-coder",
     temperature=0.2
 )
 
 # Creative writing with custom parameters
-response = client.generate_text(
+response = client.generate_response(
     prompt="Write a short story about a robot learning to paint",
     temperature=0.9,
     top_p=0.95,
-    presence_penalty=0.6
+    presence_penalty=0.6,
+    system="You are a creative writer who specializes in science fiction."
+)
+
+# Streaming response
+for chunk in client.generate_response(
+    "Write a long story",
+    stream=True
+):
+    print(chunk, end='', flush=True)
+
+# Private generation with custom referrer
+response = client.generate_response(
+    prompt="Analyze this data",
+    private=True,
+    referrer="internal-tool"
 )
 ```
 
@@ -199,21 +206,21 @@ response = client.generate_text(
 
 ```python
 # Basic image generation
-image = client.generate_image("A cute cat playing with yarn")
+image_url = client.generate_image("A cute cat playing with yarn")
 
-# High-resolution landscape
-image = client.generate_image(
+# High-resolution image with custom watermark
+image_url = client.generate_image(
     prompt="A detailed landscape of mountains at sunset",
     width=1024,
     height=768,
     model="turbo",
-    nologo=True
+    wm="DynaSpark"
 )
 
-# Image with custom watermark
-image = client.generate_image(
-    prompt="A futuristic cityscape",
-    watermark="Created with DynaSpark"
+# Image without watermark
+image_url = client.generate_image(
+    prompt="A futuristic city",
+    nologo=True
 )
 ```
 
@@ -221,15 +228,20 @@ image = client.generate_image(
 
 ```python
 # Basic audio generation
-audio = client.generate_audio("Welcome to DynaSpark!")
+audio_data = client.generate_audio_response(
+    "Welcome to DynaSpark! This is a test of the audio generation.",
+    voice="alloy"
+)
+client.save_audio(audio_data, "welcome.mp3")
 
 # Multiple voices
-for voice in ["alloy", "echo", "nova"]:
-    audio = client.generate_audio(
-        text=f"This is voice {voice}",
+voices = ["alloy", "echo", "nova"]
+for i, voice in enumerate(voices):
+    audio_data = client.generate_audio_response(
+        f"This is voice {voice}",
         voice=voice
     )
-    audio.save(f"voice_{voice}.mp3")
+    client.save_audio(audio_data, f"voice_{i}.mp3")
 ```
 
 ## Error Handling
