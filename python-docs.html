@@ -788,7 +788,7 @@ ds = DynaSpark(api_key="your_api_key")</code></pre>
                 <div id="text-generation">
                     <h3>Text Generation</h3>
                     <div class="method-signature">
-                        <code>generate_response(prompt)</code>
+                        <code>generate_response(user_input)</code>
                     </div>
                     <p>Generate text responses using various models and parameters.</p>
 
@@ -801,7 +801,7 @@ ds = DynaSpark(api_key="your_api_key")</code></pre>
                             <th>Default</th>
                         </tr>
                         <tr>
-                            <td><code>prompt</code></td>
+                            <td><code>user_input</code></td>
                             <td>str</td>
                             <td>The input text to generate a response for</td>
                             <td>Required</td>
@@ -964,7 +964,7 @@ image_url = ds.generate_image(
                 <div id="audio-generation">
                     <h3>Audio Generation</h3>
                     <div class="method-signature">
-                        <code>generate_audio_response(prompt, voice="alloy")</code>
+                        <code>generate_audio_response(text, voice="alloy")</code>
                     </div>
                     <p>Generate audio responses from prompt using various voices.</p>
 
